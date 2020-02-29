@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 // import { BrowserRouter as Router, Route, NavLink, Switch, Redirect } from 'react-router-dom';
 
 
-class LogIn extends Component<{}> {
+class Dashboard extends Component<{}> {
     // constructor(props: any) {
     //     super(props)
 
@@ -20,9 +20,11 @@ class LogIn extends Component<{}> {
         // } = this.state;
 
         return (
-            <h1>Welcome to login </h1>
+            <>
+                <h1>Welcome to bookmarks</h1>
+            </>
         );
     }
 }
 
-export default LogIn;
+export default Dashboard;

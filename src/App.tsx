@@ -4,7 +4,7 @@ import { ApplicationState } from "./types";
 import { Router } from 'react-router-dom';
 import Routes from './Routes';
 import Header from './components/Header'
-
+import './App.scss';
 interface PropsFromDispatch {
     [key: string]: any;
 }
@@ -24,9 +24,26 @@ class App extends React.Component<AllProps,ApplicationState> {
         isAuthenticated: false
     }
 }
-    public render() {
-        const { history, isAuthenticated } = this.props;
 
+componentDidMount = () => {
+
+  if( localStorage.getItem("isAuthorized") === "true") {
+    console.log("test")
+    this.setState({
+      isAuthenticated: true
+    })
+  } else {
+    console.log("test2")
+    this.setState({
+      isAuthenticated: false
+    })
+  }
+
+  console.log(this.state.isAuthenticated)
+}
+    public render() {
+        const { history } = this.props;
+      const { isAuthenticated } = this.state
         return (
           <Router history={history}>
             {isAuthenticated &&

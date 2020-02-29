@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import { BrowserRouter as Router, Route, NavLink, Switch, Redirect } from 'react-router-dom';
+import Header from '../components/Header'
+// import { BrowserRouter as Router, Route, NavLink, Switch, Redirect } from 'react-router-dom';
 
 
 class Dashboard extends Component<{}> {
@@ -20,7 +21,9 @@ class Dashboard extends Component<{}> {
         // } = this.state;
 
         return (
-            <h1>Welcome to dashboard</h1>
+            <>
+                <h1>Welcome to dashboard</h1>
+            </>
         );
     }
 }

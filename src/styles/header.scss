@@ -1,0 +1,117 @@
+.box-header {
+    display: flex;
+    height: 76px;
+    background-color: #C3083F;
+}
+
+.header-logo {
+    width: 173px;
+    height: 62px;
+}
+
+.header-nav {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.head__container {
+    width: 100%;
+    display: flex;
+}
+
+.nav-list {
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    align-items: center;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+.dashboard-link {
+    padding: 20px;
+    a {
+        font-size: 14px;
+        color: #200C0E;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 14px;
+
+        &:hover {
+            text-decoration: none;
+            color: #D1B7DA;
+            cursor: pointer;
+        }
+    
+        &:active {
+            text-decoration: none;
+            color: #D1B7DA;
+            cursor: pointer;
+        }
+    }
+   
+}
+
+.donations-link {
+    padding: 20px;
+    a {
+        font-size: 14px;
+        color: #200C0E;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 14px;
+
+        &:hover {
+            text-decoration: none;
+            color: #D1B7DA;
+            cursor: pointer;
+        }
+    
+        &:active {
+            text-decoration: none;
+            color: #D1B7DA;
+            cursor: pointer;
+        }
+    }
+}
+
+.bookmarks-link {
+    padding: 20px;
+    a {
+        font-size: 14px;
+        color: #200C0E;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 14px;
+
+        &:hover {
+            text-decoration: none;
+            color: #D1B7DA;
+            cursor: pointer;
+        }
+    
+        &:active {
+            text-decoration: none;
+            color: #D1B7DA;
+            cursor: pointer;
+        }
+    }
+}
+
+.navbar-search {
+    width: 266px;
+    height: 19px;
+    background-color: transparent;
+    align-self: center;
+    border: none;
+    outline: none;
+    padding: 15px;
+    border-left: 1px solid #200C0E;
+    &::placeholder {
+        color: #200C0E;
+        font-size: 14px;
+    }
+}
+

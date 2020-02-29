@@ -13,8 +13,9 @@ export default class Routes extends Component<AppProps, {}> {
     render() {
         const {isAuthenticated} = this.props
         return (
+            
                 <Switch>
-                        <Route exact path="/special-devices" component={Dashboard} />
+                        <Route exact path="/dashboard" component={Dashboard} />
                      
                         {!isAuthenticated &&
                             <>
@@ -22,7 +23,7 @@ export default class Routes extends Component<AppProps, {}> {
                                 <Route exact path="/signup" component={SignUp} />
                             </>
                         }
-                        <Redirect to="/login-in" />
+                        <Redirect to="/signup" />
                 </Switch>
         );
     }
