@@ -115,3 +115,20 @@
     }
 }
 
+.user-button {
+    margin-left: 5px;
+    padding-right: 10px;
+    cursor: pointer;
+    display: flex;
+
+    &:hover {
+        color: #D1B7DA;
+        cursor: pointer;
+    }
+
+    &:active {
+        color: #D1B7DA;
+        cursor: pointer;
+    }
+}
+

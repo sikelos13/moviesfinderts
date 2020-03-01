@@ -1,0 +1,46 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+// body {
+//     background: url('../images/main-bg-image.png') no-repeat center center fixed;
+//     background-size: cover;
+//     height: 100%;
+//     overflow: hidden;
+//   }
+#main-search-bar {
+    background-color: #525252;
+    border-radius: 5px;
+    width: 600px;
+    margin: auto;
+    &::placeholder {
+        color: #8E8E8E;
+        opacity: 79%;
+    }
+}
+.main-header {
+    font-family: Suwannaphum;
+font-style: normal;
+font-weight: normal;
+font-size: 39px;
+line-height: 70px;
+text-align: center;
+
+color: #C3083F;
+
+text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.main-subheader {
+    font-family: Source Sans Pro;
+font-style: normal;
+font-weight: normal;
+font-size: 18px;
+line-height: 23px;
+text-align: center;
+
+color: #4E1924;
+
+text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}

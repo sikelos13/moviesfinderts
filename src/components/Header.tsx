@@ -1,34 +1,62 @@
 import React, { Component } from 'react'
 import { NavLink, withRouter, RouteComponentProps, Link } from 'react-router-dom';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { Box, Breadcrumbs, Input } from '@material-ui/core';
+import { Box, Breadcrumbs, Input, Button, Menu, MenuItem } from '@material-ui/core';
 import HeaderLogo from '../images/header-logo.png'
-import HomeIcon from '@material-ui/icons/Home';
 import { SvgIcon } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import SearchIcon from '@material-ui/icons/Search';
+import HomeIcon from '@material-ui/icons/Home';
+import BookmarksIcon from '@material-ui/icons/Bookmarks';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 
 interface HeaderState {
     username: string;
+    anchorEl?: any | null;
+    isLoggedOut: boolean;
 }
 class Header extends Component<{}, HeaderState> {
     constructor(props: any) {
         super(props)
 
         this.state = {
-            username: ""
+            username: "",
+            isLoggedOut: false
         };
     }
     componentDidMount = () => {
         const user: any = localStorage.getItem('user');
-        const parsedUser =  JSON.parse(user);
+        const parsedUser = JSON.parse(user);
 
         console.log(parsedUser)
-        this.setState({username: parsedUser.username})
+        this.setState({ username: parsedUser && parsedUser != null && parsedUser.username })
     }
+
+    handleDropmenu = (event: any) => {
+        this.setAnchorEl(event.currentTarget);
+
+    }
+    handleClose = () => {
+        this.setAnchorEl(null);
+      };
+
+      handleLogout = () => {
+        this.setAnchorEl(null);
+        localStorage.clear();
+        this.setState({isLoggedOut: true})
+      }
+
+      setAnchorEl = (value: any | null) => {
+          this.setState({anchorEl: value})
+      }
     render() {
         // const {  location, history } = this.props;
-        const { username } = this.state;
+        const { username, anchorEl, isLoggedOut } = this.state;
+
+        if(isLoggedOut) {
+            return <Redirect to='/login' />
+        }
+
         return (
             <>
                 <div className="box-header">
@@ -49,22 +77,36 @@ class Header extends Component<{}, HeaderState> {
                                 </li>
                             </ul>
                             <Box alignSelf="center">
-                            <SvgIcon component={SearchIcon} />
-                        </Box>
-                           <input type="text" className="navbar-search" placeholder="Search movie by title..."/>
+                                <SvgIcon component={SearchIcon} />
+                            </Box>
+                            <input type="text" className="navbar-search" placeholder="Search movie by title..." />
                         </nav>
-                        <Box alignSelf="center">
-                            <SvgIcon component={AccountCircleIcon} />
-                            {username}
+                        <Box alignSelf="center" display="flex">
+                            <div className="user-button" onClick={this.handleDropmenu}>
+                                <SvgIcon component={AccountCircleIcon} />
+                                    <div>{username}</div>
+                            </div>
+                            <Menu
+                                id="simple-menu"
+                                anchorEl={anchorEl}
+                                keepMounted
+                                open={Boolean(anchorEl)}
+                                onClose={this.handleClose}
+                            >
+                                <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                                <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
+                            </Menu>
                         </Box>
                     </div>
                 </div>
                 <Breadcrumbs className="Head__Breadcrumb Head__Breadcrumb--Active">
                     <Switch>
-                        <Route exact path="/dashboard" render={() => 'Dashboard'} />
-                        <Route exact path="/bookmarks" render={() => 'Bookmarks'} />
-                        <Route exact path="/donations" render={() => 'Donations'} />
-                    </Switch>
+                        <Box display="flex" m="20px">
+                            <Route exact path="/dashboard" render={() => <><SvgIcon width="20px" height="20px" component={HomeIcon} /><span>Dashboard</span></>} />
+                            <Route exact path="/bookmarks" render={() => <><SvgIcon width="20px" height="20px" component={BookmarksIcon} /><span>Bookmarks</span></>} />
+                            <Route exact path="/donations" render={() => <><SvgIcon width="20px" height="20px" component={MonetizationOnIcon} /><span>Donate</span></>} />
+                            </Box>
+                        </Switch>
                 </Breadcrumbs>
             </>
         );

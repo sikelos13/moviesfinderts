@@ -38,18 +38,16 @@ componentDidMount = () => {
       isAuthenticated: false
     })
   }
-
-  console.log(this.state.isAuthenticated)
 }
+
     public render() {
         const { history } = this.props;
       const { isAuthenticated } = this.state
         return (
           <Router history={history}>
-            {isAuthenticated &&
-              <Header />
-            }
-                  <Routes isAuthenticated={isAuthenticated}/>
+            {/* <div className="main-bg-image"> */}
+            <Routes isAuthenticated={isAuthenticated}/>
+            {/* </div> */}
           </Router>
         );
     }

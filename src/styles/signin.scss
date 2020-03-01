@@ -1,0 +1,65 @@
+.signUp-container {
+    height: 720px;
+  }
+  
+  .signin-header {
+    font-size: 30px;
+    line-height: 36px;
+    text-align: center;
+    color: #c3083f;
+  }
+  
+  .signin-button {
+    border-radius: 50%;
+    background-color: #c3083f;
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.25);
+    height: 95px;
+    width: 95px;
+    align-self: center;
+    margin-top: 15px;
+    cursor: pointer;
+    outline: none;
+  
+    &:hover {
+      cursor: pointer;
+      outline: none;
+      background-color: #de5a81;
+    }
+    &:active {
+      outline: none;
+      background-color: #de5a81;
+      cursor: pointer;
+    }
+  
+    .signin-button-text {
+      font-size: 17px;
+      line-height: 100%;
+      text-align: center;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #bdbdbd;
+    }
+  }
+  
+  .dont-have-account {
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    color: #c31347;
+  
+    .singin-button {
+      color: #5f5f5f;
+      text-decoration: none;
+  
+      &:hover {
+        text-decoration: none;
+        color: #c31347;
+      }
+  
+      &:active {
+        text-decoration: none;
+        color: #c31347;
+      }
+    }
+  }
+  

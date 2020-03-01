@@ -14,6 +14,7 @@ interface SignUpState {
     formIsValid: boolean;
     formErrorText: string;
     isReady: boolean;
+    clickSignIn: boolean;
     form: {
         username: string;
         password: string;
@@ -29,6 +30,7 @@ class SignUp extends Component<{}, SignUpState> {
             formIsValid: true,
             formErrorText: "",
             isReady: false,
+            clickSignIn: false,
             form: {
                 username: "",
                 password: "",
@@ -52,6 +54,7 @@ class SignUp extends Component<{}, SignUpState> {
             formErrorText: ""
         })
     }
+
     handleFormValidation = (form: any) => {
         if (form.username === "" || form.password === "" || form.verify_password === "") {
             this.setState({
@@ -84,10 +87,17 @@ class SignUp extends Component<{}, SignUpState> {
         });
     }
 
+    redirectToSignIn = () => {
+        this.setState({clickSignIn: true})
+    }
+
     render() {
-        const { formIsValid, formErrorText,isReady } = this.state
+        const { formIsValid, formErrorText,isReady,clickSignIn } = this.state
         if(isReady) {
-            return <Redirect to='/dashboard' />
+            return <Redirect  to='/dashboard' />
+        }
+        if(clickSignIn) {
+            return <Redirect  to='/login' />
         }
         return (
             <Box width="100%" height="720px" display="flex" justifyContent="center">
@@ -119,7 +129,7 @@ class SignUp extends Component<{}, SignUpState> {
                             <FormHelperText id="my-helper-text">We'll never share your password.</FormHelperText>
                         </FormControl>
                         <button className="signup-button" onClick={this.submitSignUpForm}><span className="signup-button-text">Sign Up</span></button>
-                        <p className="already-signup">Do you have an account? <a href="" className="singin-button">Sign in</a></p>
+                        <p className="already-signup">Do you have an account? <a href="" className="singin-button" onClick={this.redirectToSignIn}>Sign in</a></p>
                     </Box>
                 </Box>
             </Box>
