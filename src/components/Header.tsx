@@ -1,38 +1,117 @@
 import React, { Component } from 'react'
-import { NavLink, withRouter, RouteComponentProps } from 'react-router-dom';
+import { NavLink, withRouter, RouteComponentProps, Link } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import { Box, Breadcrumbs, Input, Button, Menu, MenuItem } from '@material-ui/core';
+import HeaderLogo from '../images/header-logo.png'
+import { SvgIcon } from '@material-ui/core';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import SearchIcon from '@material-ui/icons/Search';
+import HomeIcon from '@material-ui/icons/Home';
+import BookmarksIcon from '@material-ui/icons/Bookmarks';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 
+interface HeaderState {
+    username: string;
+    anchorEl?: any | null;
+    isLoggedOut: boolean;
+}
+class Header extends Component<{}, HeaderState> {
+    constructor(props: any) {
+        super(props)
 
-type AllProps =  RouteComponentProps<{}>;
+        this.state = {
+            username: "",
+            isLoggedOut: false
+        };
+    }
+    componentDidMount = () => {
+        const user: any = localStorage.getItem('user');
+        const parsedUser = JSON.parse(user);
 
-class Header extends Component<AllProps, {}> {
+        console.log(parsedUser)
+        this.setState({ username: parsedUser && parsedUser != null && parsedUser.username })
+    }
+
+    handleDropmenu = (event: any) => {
+        this.setAnchorEl(event.currentTarget);
+
+    }
+    handleClose = () => {
+        this.setAnchorEl(null);
+      };
+
+      handleLogout = () => {
+        this.setAnchorEl(null);
+        localStorage.clear();
+        this.setState({isLoggedOut: true})
+      }
+
+      setAnchorEl = (value: any | null) => {
+          this.setState({anchorEl: value})
+      }
     render() {
-        const {  location, history } = this.props;
+        // const {  location, history } = this.props;
+        const { username, anchorEl, isLoggedOut } = this.state;
+
+        if(isLoggedOut) {
+            return <Redirect to='/login' />
+        }
 
         return (
-            <div className="Head">
-                <div className="Head__Container">
-                    <div className="Head__Top">
-                        <div className="Head__Breadcrumbs">
-                            <span className="Head__Breadcrumb Head__Breadcrumb--Disabled">Account</span>
-                            <span className="Head__Breadcrumb Head__Breadcrumb--Separator">
-                                {/* <Icon svgPaths={IconChevronRight} /> */}
-                            </span>
-                            <div className="Head__Breadcrumb Head__Breadcrumb--Active">
-                                {/* {getCurrentPageTitle(location.pathname)} */}
+            <>
+                <div className="box-header">
+                    <div className="head__container">
+                        <Box alignSelf="center">
+                            <img src={HeaderLogo} alt="header-logo" className="header-logo" />
+                        </Box>
+                        <nav className="header-nav">
+                            <ul className="nav-list">
+                                <li className="dashboard-link">
+                                    <Link to="/dashboard">Dashboard</Link>
+                                </li>
+                                <li className="bookmarks-link">
+                                    <Link to="/bookmarks">Bookmarks</Link>
+                                </li>
+                                <li className="donations-link">
+                                    <Link to="/donations">Donate</Link>
+                                </li>
+                            </ul>
+                            <Box alignSelf="center">
+                                <SvgIcon component={SearchIcon} />
+                            </Box>
+                            <input type="text" className="navbar-search" placeholder="Search movie by title..." />
+                        </nav>
+                        <Box alignSelf="center" display="flex">
+                            <div className="user-button" onClick={this.handleDropmenu}>
+                                <SvgIcon component={AccountCircleIcon} />
+                                    <div>{username}</div>
                             </div>
-                        </div>
-                    </div>
-                    <div className="Head__Bottom">
-                        <div className="Head__Tabs">
-                          Moviefinder
-                        </div>
-
+                            <Menu
+                                id="simple-menu"
+                                anchorEl={anchorEl}
+                                keepMounted
+                                open={Boolean(anchorEl)}
+                                onClose={this.handleClose}
+                            >
+                                <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                                <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
+                            </Menu>
+                        </Box>
                     </div>
                 </div>
-            </div>
+                <Breadcrumbs className="Head__Breadcrumb Head__Breadcrumb--Active">
+                    <Switch>
+                        <Box display="flex" m="20px">
+                            <Route exact path="/dashboard" render={() => <><SvgIcon width="20px" height="20px" component={HomeIcon} /><span>Dashboard</span></>} />
+                            <Route exact path="/bookmarks" render={() => <><SvgIcon width="20px" height="20px" component={BookmarksIcon} /><span>Bookmarks</span></>} />
+                            <Route exact path="/donations" render={() => <><SvgIcon width="20px" height="20px" component={MonetizationOnIcon} /><span>Donate</span></>} />
+                            </Box>
+                        </Switch>
+                </Breadcrumbs>
+            </>
         );
     }
 }
 
 
-export default withRouter(Header)
+export default Header
