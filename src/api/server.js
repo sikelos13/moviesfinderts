@@ -34,9 +34,11 @@ mongoose.connect(dbConfig.url, {
 //Import routes
 const userRouter = require('./routes/user.routes');
 const movieRouter = require('./routes/movie.routes');
+const accountRouter = require('./routes/account.routes');
 
 app.use('/api/v1/', userRouter);
-app.use('/api/v1/', movieRouter);
+app.use('/api/v1/search', movieRouter);
+app.use('/api/v1/account', accountRouter);
 
 // listen for requests
 app.listen(8000, (err) => {

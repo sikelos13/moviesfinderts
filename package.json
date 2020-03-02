@@ -22,6 +22,8 @@
     "concurrently": "^5.1.0",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
+    "http": "0.0.0",
+    "https": "^1.0.0",
     "lodash-es": "^4.17.15",
     "mongo-in-memory": "0.0.5",
     "mongoose": "^5.9.2",
