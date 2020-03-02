@@ -28,12 +28,10 @@ class App extends React.Component<AllProps,ApplicationState> {
 componentDidMount = () => {
 
   if( localStorage.getItem("isAuthorized") === "true") {
-    console.log("test")
     this.setState({
       isAuthenticated: true
     })
   } else {
-    console.log("test2")
     this.setState({
       isAuthenticated: false
     })
@@ -45,9 +43,7 @@ componentDidMount = () => {
       const { isAuthenticated } = this.state
         return (
           <Router history={history}>
-            {/* <div className="main-bg-image"> */}
-            <Routes isAuthenticated={isAuthenticated}/>
-            {/* </div> */}
+            <Routes />
           </Router>
         );
     }

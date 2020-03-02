@@ -2,20 +2,39 @@ import React, { Component, Fragment } from 'react';
 import Header from '../components/Header'
 // import { BrowserRouter as Router, Route, NavLink, Switch, Redirect } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import DirectionsIcon from '@material-ui/icons/Directions';
+// import Paper from '@material-ui/core/Paper';
+// import InputBase from '@material-ui/core/InputBase';
+// import Divider from '@material-ui/core/Divider';
+// import IconButton from '@material-ui/core/IconButton';
+// import MenuIcon from '@material-ui/icons/Menu';
+// import SearchIcon from '@material-ui/icons/Search';
+// import DirectionsIcon from '@material-ui/icons/Directions';
+import _debounce from 'lodash-es/debounce';
+import { Movie } from '../types'
+interface DashboardState {
+    inputSearch: string;
+    results?: Movie[]
+}
 
-class Dashboard extends Component<{}> {
-    // constructor(props: any) {
-    //     super(props)
+class Dashboard extends Component<{},DashboardState> {
+    constructor(props: any) {
+        super(props)
 
-    //     this.state = initState();
-    // }
+        this.state = {
+            inputSearch: ""
+        }
+        this.handleSearchInput = _debounce(this.handleSearchInput,1000);
+    }
+
+    handleSearch= (e: any) => {
+        // event.persist();
+        this.setState({inputSearch: e.target.value});
+        this.handleSearchInput(e.target.value.trim())
+    }
+
+    handleSearchInput = (value: string) => {
+        console.log(value)
+    }
 
     render() {
         // const { className } = this.props;
@@ -38,13 +57,12 @@ class Dashboard extends Component<{}> {
                         placeholder="Search movie by title..."
                         size="medium"
                         margin="normal"
+                        onChange={this.handleSearch}
                         InputLabelProps={{
                             shrink: true,
                         }}
                         variant="outlined"
-                        >
-                            </TextField> 
-             
+                        />             
                 </div>
             </>
         );

@@ -8,15 +8,13 @@ import Header from './components/Header'
 import Bookmarks from "./containers/Bookmarks";
 import { Container } from '@material-ui/core';
 
-interface AppProps {
-    isAuthenticated: boolean;
-}
+
 interface RoutesState {
     isAuthenticated: boolean;
 }
 
-export default class Routes extends Component<AppProps, RoutesState> {
-    constructor(props: AppProps) {
+export default class Routes extends Component<{}, RoutesState> {
+    constructor(props: any) {
         super(props);
     
         this.state = {

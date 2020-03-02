@@ -1,14 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import { BrowserRouter as Router, Route, NavLink, Switch, Redirect } from 'react-router-dom';
-import Container, { ContainerProps } from '@material-ui/core/Container';
+// import Container, { ContainerProps } from '@material-ui/core/Container';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import Grid from '@material-ui/core/Grid';
+// import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LogInIcon from '../images/login-in.png'
-import { Button } from '@material-ui/core';
+// import { Button } from '@material-ui/core';
 
 interface LogInState {
     formIsValid: boolean;

@@ -38,22 +38,22 @@ class Header extends Component<{}, HeaderState> {
     }
     handleClose = () => {
         this.setAnchorEl(null);
-      };
+    };
 
-      handleLogout = () => {
+    handleLogout = () => {
         this.setAnchorEl(null);
         localStorage.clear();
-        this.setState({isLoggedOut: true})
-      }
+        this.setState({ isLoggedOut: true })
+    }
 
-      setAnchorEl = (value: any | null) => {
-          this.setState({anchorEl: value})
-      }
+    setAnchorEl = (value: any | null) => {
+        this.setState({ anchorEl: value })
+    }
     render() {
         // const {  location, history } = this.props;
         const { username, anchorEl, isLoggedOut } = this.state;
 
-        if(isLoggedOut) {
+        if (isLoggedOut) {
             return <Redirect to='/login' />
         }
 
@@ -84,7 +84,7 @@ class Header extends Component<{}, HeaderState> {
                         <Box alignSelf="center" display="flex">
                             <div className="user-button" onClick={this.handleDropmenu}>
                                 <SvgIcon component={AccountCircleIcon} />
-                                    <div>{username}</div>
+                                <div>{username}</div>
                             </div>
                             <Menu
                                 id="simple-menu"
@@ -100,13 +100,14 @@ class Header extends Component<{}, HeaderState> {
                     </div>
                 </div>
                 <Breadcrumbs className="Head__Breadcrumb Head__Breadcrumb--Active">
-                    <Switch>
-                        <Box display="flex" m="20px">
+                    <Box display="flex" m="20px">
+                        <Switch>
                             <Route exact path="/dashboard" render={() => <><SvgIcon width="20px" height="20px" component={HomeIcon} /><span>Dashboard</span></>} />
                             <Route exact path="/bookmarks" render={() => <><SvgIcon width="20px" height="20px" component={BookmarksIcon} /><span>Bookmarks</span></>} />
                             <Route exact path="/donations" render={() => <><SvgIcon width="20px" height="20px" component={MonetizationOnIcon} /><span>Donate</span></>} />
-                            </Box>
                         </Switch>
+                    </Box>
+
                 </Breadcrumbs>
             </>
         );
