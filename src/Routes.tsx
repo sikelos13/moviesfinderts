@@ -7,6 +7,7 @@ import SignUp from "./containers/SignUp";
 import Header from './components/Header'
 import Bookmarks from "./containers/Bookmarks";
 import { Container } from '@material-ui/core';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 interface RoutesState {
     isAuthenticated: boolean;
@@ -50,8 +51,8 @@ export default class Routes extends Component<{}, RoutesState> {
                                 <div className="main-bg-image">
                                     <Header />
                                     <Container>
-                                        <Route  path="/dashboard" component={Dashboard} />
-                                        <Route  path="/bookmarks" component={Bookmarks} />
+                                        <ProtectedRoute  path="/dashboard" component={Dashboard} />
+                                        <ProtectedRoute  path="/bookmarks" component={Bookmarks} />
                                     </Container>
                                     </div>
                                 </>
