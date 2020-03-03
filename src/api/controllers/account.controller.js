@@ -4,6 +4,7 @@ exports.login = (req, res) => {
 
     // Validate request
     if (!req.body.username || !req.body.password) {
+
         return res.status(400).send({
             message: "username or password not valid"
         });
@@ -40,7 +41,8 @@ exports.logout = (req, res) => {
         });
     }
 
-    req.session.loggedin = true;
+    req.session.loggedin = false;
+    req.session.userId = null;
     return res.status(200).send({
         message: "logout successful"
     });

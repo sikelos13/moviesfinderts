@@ -18,7 +18,7 @@ exports.create = (req, res) => {
 
     users.findOne({username:user.username,password:user.password}, function (err, u) {
         if (err) return console.error(err);
-        console.log("usdsadaer exist ", u);
+
         if (u) {
             console.log("user exist ", u);
             return res.status(400).send({
