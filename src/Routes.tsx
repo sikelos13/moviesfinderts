@@ -8,9 +8,9 @@ import Header from './components/Header'
 import Bookmarks from "./containers/Bookmarks";
 import { Container } from '@material-ui/core';
 
-
 interface RoutesState {
     isAuthenticated: boolean;
+    defaultPage: string;
 }
 
 export default class Routes extends Component<{}, RoutesState> {
@@ -18,7 +18,8 @@ export default class Routes extends Component<{}, RoutesState> {
         super(props);
     
         this.state = {
-            isAuthenticated: false
+            isAuthenticated: false,
+            defaultPage: "/dashboard"
         }
     }
     

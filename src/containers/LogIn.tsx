@@ -9,6 +9,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Box from '@material-ui/core/Box';
 import LogInIcon from '../images/login-in.png'
 // import { Button } from '@material-ui/core';
+import axios from 'axios';
 
 interface LogInState {
     formIsValid: boolean;
@@ -39,6 +40,14 @@ class LogIn extends Component<{}, LogInState> {
     submitSignInForm = () => {
         const { form } = this.state;
         if (this.handleFormValidation(form)) {
+            axios.post(`http://localhost:8000/api/v1/login`, { username: form.username, password: form.password })
+            .then((res: any) => {
+              console.log(res);
+              if(res.status == 200) {
+                localStorage.setItem(`isAuthorized`, JSON.stringify(true));
+              }
+              console.log(res.data);
+            })
             this.setState({ isReady: true })
         }
     }
@@ -52,7 +61,7 @@ class LogIn extends Component<{}, LogInState> {
 
     handleFormValidation = (form: any) => {
         const user: any = localStorage.getItem('user');
-        const parsedUser = JSON.parse(user);
+        // const parsedUser = JSON.parse(user);
         console.log(form)
         if (form.password === "" || form.username === "") {
             this.setState({
@@ -60,21 +69,24 @@ class LogIn extends Component<{}, LogInState> {
                 formErrorText: "Please fill all the fields in you sign up form"
             })
             return false;
-        } else if (form.password !== parsedUser.password) {
-            this.setState({
-                formIsValid: false,
-                formErrorText: "Invalid password"
-            })
-            return false;
-        } else if (form.username !== parsedUser.username) {
-            this.setState({
-                formIsValid: false,
-                formErrorText: "Invalid username"
-            })
-            return false
-        } else if (parsedUser && parsedUser.username === form.username && parsedUser.password === form.password) {
-            return true;
+        }else {
+            return true
         }
+        // } else if (form.password !== parsedUser.password) {
+        //     this.setState({
+        //         formIsValid: false,
+        //         formErrorText: "Invalid password"
+        //     })
+        //     return false;
+        // } else if (form.username !== parsedUser.username) {
+        //     this.setState({
+        //         formIsValid: false,
+        //         formErrorText: "Invalid username"
+        //     })
+        //     return false
+        // } else if (parsedUser && parsedUser.username === form.username && parsedUser.password === form.password) {
+        //     return true;
+        // }
     }
 
     onChangeFormInput = (event: any) => {

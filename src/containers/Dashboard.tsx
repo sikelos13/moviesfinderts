@@ -14,6 +14,7 @@ import { Movie } from '../types'
 interface DashboardState {
     inputSearch: string;
     results?: Movie[]
+    isAuthorized: boolean
 }
 
 class Dashboard extends Component<{},DashboardState> {
@@ -21,7 +22,8 @@ class Dashboard extends Component<{},DashboardState> {
         super(props)
 
         this.state = {
-            inputSearch: ""
+            inputSearch: "",
+            isAuthorized: false
         }
         this.handleSearchInput = _debounce(this.handleSearchInput,1000);
     }

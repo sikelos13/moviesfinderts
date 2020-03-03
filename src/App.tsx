@@ -5,19 +5,17 @@ import { Router } from 'react-router-dom';
 import Routes from './Routes';
 import Header from './components/Header'
 import './App.scss';
-interface PropsFromDispatch {
-    [key: string]: any;
-}
+import history from './history'
+
 // Any additional component props go here.
 interface OwnProps {
     history: History;
 }
 
 // Create an intersection type of the component props and our Redux props.
-type AllProps = PropsFromDispatch & OwnProps;
 
-class App extends React.Component<AllProps,ApplicationState> {
-  constructor(props: AllProps) {
+class App extends React.Component<OwnProps,ApplicationState> {
+  constructor(props: OwnProps) {
     super(props);
 
     this.state = {
@@ -31,6 +29,7 @@ componentDidMount = () => {
     this.setState({
       isAuthenticated: true
     })
+    history.push('/dashboard')
   } else {
     this.setState({
       isAuthenticated: false
@@ -44,6 +43,7 @@ componentDidMount = () => {
         return (
           <Router history={history}>
             <Routes />
+            
           </Router>
         );
     }
