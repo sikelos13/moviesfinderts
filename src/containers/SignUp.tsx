@@ -10,7 +10,9 @@ import Box from '@material-ui/core/Box';
 import SignUpLogo from '../images/signup-1.png'
 // import { Button } from '@material-ui/core';
 import axios from 'axios';
-import history from '../history'
+import { ProtectedRoute } from '../components/ProtectedRoute';
+import Dashboard from "./Dashboard";
+import history from "../history";
 
 interface SignUpState {
     formIsValid: boolean;
@@ -41,37 +43,20 @@ class SignUp extends Component<{}, SignUpState> {
         };
     }
 
-     signUpData = (data: any) => {
-
-    }
-
     submitSignUpForm = () => {
         const { form } = this.state;
        
         if (this.handleFormValidation(form)) {
-            // const data = {
-            //     username: form.username,
-            //     password: form.password
-            // }
-            // localStorage.setItem('user', JSON.stringify(form));
-            // this.signUpData(data);
-            let axiosConfig = {
-                headers: {
-                    'Content-Type': 'application/json;charset=UTF-8',
-                    "Access-Control-Allow-Origin": "*",
-                }
-              };
-           axios.post(`http://localhost:8000/api/v1/user`, { username: form.username, password: form.password })
+    
+            axios.post(`http://localhost:8000/api/v1/user`, { username: form.username, password: form.password })
             .then((res: any) => {
-              console.log(res);
               if(res.status == 200) {
-                localStorage.setItem('isAuthorized', JSON.stringify(true));
-                this.setState({isReady: true})
+                localStorage.setItem(`isAuthorized`, JSON.stringify(true));
+                localStorage.setItem('user', JSON.stringify(form));
+                history.push('./dashboard');
               }
-              console.log(res.data);
             })
 
-            this.setState({ isReady: true })
         }
     }
 
@@ -119,13 +104,14 @@ class SignUp extends Component<{}, SignUpState> {
     }
 
     render() {
-        const { formIsValid, formErrorText, isReady, clickSignIn } = this.state
+        const { formIsValid, formErrorText, isReady, clickSignIn} = this.state
         if (isReady) {
-            return <Redirect to={{ pathname: '/dashboard', state: { isAuthorized: true } }}/>
+            return <Redirect to="/dashboard" />
         }
         if (clickSignIn) {
             return <Redirect to='/login' />
         }
+
         return (
             <Box width="100%" height="720px" display="flex" justifyContent="center">
                 <Box width="100%" display="flex" justifyContent="space-around" alignItems="center">

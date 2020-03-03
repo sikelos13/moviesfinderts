@@ -4,7 +4,7 @@ import { Movie } from '../types'
 import { Container } from '@material-ui/core';
 import Header from '../components/Header'
 
-class Dashboard extends Component<{}> {
+class Account extends Component<{}> {
     // constructor(props: any) {
     //     super(props)
 
@@ -25,11 +25,11 @@ class Dashboard extends Component<{}> {
             <>
               <Header />
                     <Container>
-                <h1>Welcome to bookmarks</h1>
+                <h1>Welcome to your account</h1>
                     </Container>
             </>
         );
     }
 }
 
-export default Dashboard;
+export default Account;

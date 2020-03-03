@@ -9,6 +9,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import HomeIcon from '@material-ui/icons/Home';
 import BookmarksIcon from '@material-ui/icons/Bookmarks';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import history from '../history'
+import {ProtectedRoute}  from '../components/ProtectedRoute';
 
 interface HeaderState {
     username: string;
@@ -21,7 +23,7 @@ class Header extends Component<{}, HeaderState> {
 
         this.state = {
             username: "",
-            isLoggedOut: false
+            isLoggedOut: false,
         };
     }
     componentDidMount = () => {
@@ -29,7 +31,7 @@ class Header extends Component<{}, HeaderState> {
         const parsedUser = JSON.parse(user);
 
         console.log(parsedUser)
-        this.setState({ username: parsedUser && parsedUser != null && parsedUser.username })
+        this.setState({ username: parsedUser && parsedUser != null && parsedUser.username})
     }
 
     handleDropmenu = (event: any) => {
@@ -43,19 +45,19 @@ class Header extends Component<{}, HeaderState> {
     handleLogout = () => {
         this.setAnchorEl(null);
         localStorage.clear();
-        this.setState({ isLoggedOut: true })
+        history.push('/login');
+    }
+
+    handleAccount = () => {
+        this.setAnchorEl(null);
+        history.push('/account-settings');
     }
 
     setAnchorEl = (value: any | null) => {
         this.setState({ anchorEl: value })
     }
     render() {
-        // const {  location, history } = this.props;
-        const { username, anchorEl, isLoggedOut } = this.state;
-
-        if (isLoggedOut) {
-            return <Redirect to='/login' />
-        }
+        const { username, anchorEl } = this.state;
 
         return (
             <>
@@ -93,7 +95,7 @@ class Header extends Component<{}, HeaderState> {
                                 open={Boolean(anchorEl)}
                                 onClose={this.handleClose}
                             >
-                                <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                                <MenuItem onClick={this.handleAccount}>My account</MenuItem>
                                 <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
                             </Menu>
                         </Box>

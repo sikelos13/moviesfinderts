@@ -45,6 +45,7 @@ class LogIn extends Component<{}, LogInState> {
               console.log(res);
               if(res.status == 200) {
                 localStorage.setItem(`isAuthorized`, JSON.stringify(true));
+                localStorage.setItem('user', JSON.stringify(form));
               }
               console.log(res.data);
             })
@@ -62,6 +63,7 @@ class LogIn extends Component<{}, LogInState> {
     handleFormValidation = (form: any) => {
         const user: any = localStorage.getItem('user');
         // const parsedUser = JSON.parse(user);
+
         console.log(form)
         if (form.password === "" || form.username === "") {
             this.setState({
@@ -108,9 +110,9 @@ class LogIn extends Component<{}, LogInState> {
     }
 
     render() {
-        const { formIsValid, formErrorText, isReady, clickSignUp } = this.state
+        const { formIsValid, formErrorText, isReady, clickSignUp, form } = this.state
         if (isReady) {
-            return <Redirect to='/dashboard' />
+            return <Redirect to={{ pathname: '/dashboard', state: { username: form.username  } }}/>
         }
         if (clickSignUp) {
             return <Redirect to='/signup' />

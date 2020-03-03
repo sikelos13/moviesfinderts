@@ -3,7 +3,6 @@ import { History } from "history";
 import { ApplicationState } from "./types";
 import { Router } from 'react-router-dom';
 import Routes from './Routes';
-import Header from './components/Header'
 import './App.scss';
 import history from './history'
 
@@ -15,35 +14,20 @@ interface OwnProps {
 // Create an intersection type of the component props and our Redux props.
 
 class App extends React.Component<OwnProps,ApplicationState> {
-  constructor(props: OwnProps) {
-    super(props);
+//   constructor(props: OwnProps) {
+//     super(props);
 
-    this.state = {
-        isAuthenticated: false
-    }
-}
-
-componentDidMount = () => {
-
-  if( localStorage.getItem("isAuthorized") === "true") {
-    this.setState({
-      isAuthenticated: true
-    })
-    history.push('/dashboard')
-  } else {
-    this.setState({
-      isAuthenticated: false
-    })
-  }
-}
+//     this.state = {
+//         isAuthenticated: false
+//     }
+// }
 
     public render() {
         const { history } = this.props;
-      const { isAuthenticated } = this.state
+
         return (
           <Router history={history}>
             <Routes />
-            
           </Router>
         );
     }
