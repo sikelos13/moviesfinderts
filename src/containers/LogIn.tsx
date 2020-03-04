@@ -1,21 +1,17 @@
 import React, { Component, Fragment } from 'react';
 import { BrowserRouter as Router, Route, NavLink, Switch, Redirect } from 'react-router-dom';
-// import Container, { ContainerProps } from '@material-ui/core/Container';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
-// import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LogInIcon from '../images/login-in.png'
-// import { Button } from '@material-ui/core';
 import axios from 'axios';
+import history from "../history";
 
 interface LogInState {
     formIsValid: boolean;
     formErrorText: string;
-    isReady: boolean;
-    clickSignUp: boolean;
     form: {
         username: string;
         password: string;
@@ -29,8 +25,6 @@ class LogIn extends Component<{}, LogInState> {
         this.state = {
             formIsValid: true,
             formErrorText: "",
-            isReady: false,
-            clickSignUp: false,
             form: {
                 username: "",
                 password: "",
@@ -46,10 +40,11 @@ class LogIn extends Component<{}, LogInState> {
               if(res.status == 200) {
                 localStorage.setItem(`isAuthorized`, JSON.stringify(true));
                 localStorage.setItem('user', JSON.stringify(form));
+                history.push('./dashboard');
+
               }
               console.log(res.data);
             })
-            this.setState({ isReady: true })
         }
     }
 
@@ -62,9 +57,7 @@ class LogIn extends Component<{}, LogInState> {
 
     handleFormValidation = (form: any) => {
         const user: any = localStorage.getItem('user');
-        // const parsedUser = JSON.parse(user);
 
-        console.log(form)
         if (form.password === "" || form.username === "") {
             this.setState({
                 formIsValid: false,
@@ -106,17 +99,12 @@ class LogIn extends Component<{}, LogInState> {
     }
 
     redirectToSignUp = () => {
-        this.setState({ clickSignUp: true })
+        history.push('./signup');
     }
 
     render() {
-        const { formIsValid, formErrorText, isReady, clickSignUp, form } = this.state
-        if (isReady) {
-            return <Redirect to={{ pathname: '/dashboard', state: { username: form.username  } }}/>
-        }
-        if (clickSignUp) {
-            return <Redirect to='/signup' />
-        }
+        const { formIsValid, formErrorText,form } = this.state
+   
         return (
             <Box width="100%" height="720px" display="flex" justifyContent="center">
                 <Box width="100%" display="flex" justifyContent="space-around" alignItems="center">

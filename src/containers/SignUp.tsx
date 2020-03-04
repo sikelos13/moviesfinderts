@@ -1,24 +1,17 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, NavLink, Switch, Redirect } from 'react-router-dom';
-// import Container, { ContainerProps } from '@material-ui/core/Container';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
-// import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import SignUpLogo from '../images/signup-1.png'
-// import { Button } from '@material-ui/core';
 import axios from 'axios';
-import { ProtectedRoute } from '../components/ProtectedRoute';
-import Dashboard from "./Dashboard";
 import history from "../history";
 
 interface SignUpState {
     formIsValid: boolean;
     formErrorText: string;
-    isReady: boolean;
-    clickSignIn: boolean;
     form: {
         username: string;
         password: string;
@@ -33,8 +26,6 @@ class SignUp extends Component<{}, SignUpState> {
         this.state = {
             formIsValid: true,
             formErrorText: "",
-            isReady: false,
-            clickSignIn: false,
             form: {
                 username: "",
                 password: "",
@@ -56,7 +47,6 @@ class SignUp extends Component<{}, SignUpState> {
                 history.push('./dashboard');
               }
             })
-
         }
     }
 
@@ -100,18 +90,12 @@ class SignUp extends Component<{}, SignUpState> {
     }
 
     redirectToSignIn = () => {
-        this.setState({ clickSignIn: true })
+        history.push('./login');
     }
 
     render() {
-        const { formIsValid, formErrorText, isReady, clickSignIn} = this.state
-        if (isReady) {
-            return <Redirect to="/dashboard" />
-        }
-        if (clickSignIn) {
-            return <Redirect to='/login' />
-        }
-
+        const { formIsValid, formErrorText} = this.state
+       
         return (
             <Box width="100%" height="720px" display="flex" justifyContent="center">
                 <Box width="100%" display="flex" justifyContent="space-around" alignItems="center">

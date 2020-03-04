@@ -51,7 +51,7 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
                 <Header />
                     <Container>
                         <div className="dashboard-container">
-                            <h1 className="main-header">Welcome to Moviefinder.{username}</h1>
+                            <h1 className="main-header">Welcome to Moviefinder.</h1>
                             <h3 className="main-subheader">Type title or part of the title in order to find your match</h3>
                             <TextField
                                 id="main-search-bar"
