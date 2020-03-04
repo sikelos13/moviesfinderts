@@ -1,4 +1,7 @@
 const users = require('../models/users.model');
+const bookmarks = require('../models/bookmarks.model');
+const mongoose = require('mongoose');
+
 
 exports.login = (req, res) => {
 
@@ -10,7 +13,7 @@ exports.login = (req, res) => {
         });
     }
 
-    users.findOne({username:req.body.username ,password:req.body.password})
+    users.findOne({username: req.body.username, password: req.body.password})
         .then(user => {
             if (!user) {
                 return res.status(404).send({
@@ -35,7 +38,7 @@ exports.login = (req, res) => {
 
 exports.logout = (req, res) => {
 
-    if(!req.session.loggedin){
+    if (!req.session.loggedin) {
         return res.status(401).send({
             message: "Unauthorized request"
         });
@@ -48,3 +51,86 @@ exports.logout = (req, res) => {
     });
 };
 
+exports.updateBookmarks = (req, res) => {
+
+    if (!req.session.loggedin || req.session.userId !== req.params.userId) {
+        return res.status(401).send({
+            message: "Unauthorized request"
+        });
+    }
+
+    users.findOne({_id: req.session.userId})
+        .then(user => {
+            if (!user) {
+                return res.status(500).send({
+                    message: "General Error"
+                });
+            }
+            bookmarks.find({userId: req.session.userId}).then(data => {
+                if (data.length > 1) {
+                    res.status(500).send({message: error.message || "data inconsistency."});
+                }
+                if (!data || data.length === 0) {
+
+                    let bookmark = new bookmarks();
+                    bookmark.userId = req.session.userId;
+                    bookmark.favorites.push(req.params.movieId);
+                    bookmark._id = mongoose.Types.ObjectId();
+                    bookmark.save().then(favorite => {
+                        console.log("save bookmark done: ", favorite);
+                        res.send(favorite);
+                    }).catch(error => {
+                        res.status(500).send({
+                            message: error.message || "Some error occurred while creating the bookmark."
+                        });
+                    })
+                } else {
+
+                    let index = data[0].favorites.indexOf(req.params.movieId);
+                    if (index > -1) {
+                        data[0].favorites.splice(index, 1);
+
+                    } else {
+                        if(!data[0].favorites){
+                            data[0].favorites = [];
+                        }
+                        data[0].favorites.push(req.params.movieId);
+                        console.log("save bookmark done: ", data);
+                    }
+                    console.log("save bookmark done: ", data);
+
+                    bookmarks.findByIdAndUpdate(data[0]._id, {
+                        userId: req.params.userId,
+                        favorites: data[0].favorites
+                    }, {new: true}).then(saved => {
+                        console.log("removed or saved favorite done: ", saved);
+                        res.send(saved);
+                    });
+                }
+            }).catch(error => {
+                res.status(500).send({message: error.message || "Some error occurred while creating the bookmark."});
+            });
+        }).catch(error => {
+        res.status(500).send({message: error.message || "Some error occurred while creating the bookmark."});
+    });
+};
+
+
+exports.bookmarks = (req, res) => {
+
+    if (!req.session.loggedin || req.session.userId !== req.params.userId) {
+        return res.status(401).send({
+            message: "Unauthorized request"
+        });
+    }
+
+    bookmarks.findOne({userId: req.params.userId}).then(bookmark => {
+        console.log("retrieved ", bookmark);
+        if (!bookmark) {
+            return res.status(404).send({message: "bookmarks not found for userId " + req.params.userId});
+        }
+        res.send(bookmark);
+    }).catch(error => {
+        res.status(500).send({message: error.message || "Some error occurred while creating the bookmark."});
+    });
+};

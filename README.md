@@ -9,7 +9,8 @@ Clone the repository and npm install the dependecies.
 
 ## How it Works
 
-Run the app with `npm run start` . The server listens to :8000 port and frontend at :3000
+Run the app with `npm run start` . The server listens to :8000 port and frontend at :3000. 
+For storing data we are using a in-memory MongoDB that you can connect with mongodb://localhost:27017/movieFinder 
 
 ### `npm test`
 

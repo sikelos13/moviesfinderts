@@ -51,9 +51,7 @@ exports.findOne = (req, res) => {
     users.findById(req.params.userId)
         .then(user => {
             if (!user) {
-                return res.status(404).send({
-                    message: "user not found with id " + req.params.userId
-                });
+                return res.status(404).send({message: "user not found with id " + req.params.userId});
             }
             res.send(user);
         }).catch(err => {
