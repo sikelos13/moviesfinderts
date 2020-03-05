@@ -62,8 +62,8 @@ exports.updateBookmarks = (req, res) => {
     users.findOne({_id: req.session.userId})
         .then(user => {
             if (!user) {
-                return res.status(500).send({
-                    message: "General Error"
+                return res.status(404).send({
+                    message: "User Not Found"
                 });
             }
             bookmarks.find({userId: req.session.userId}).then(data => {
@@ -80,18 +80,16 @@ exports.updateBookmarks = (req, res) => {
                         console.log("save bookmark done: ", favorite);
                         res.send(favorite);
                     }).catch(error => {
-                        res.status(500).send({
+                        return res.status(500).send({
                             message: error.message || "Some error occurred while creating the bookmark."
                         });
                     })
                 } else {
 
-                    let index = data[0].favorites.indexOf(req.params.movieId);
-                    if (index > -1) {
-                        data[0].favorites.splice(index, 1);
-
+                    if (data[0].favorites.indexOf(req.params.movieId) > -1) {
+                        return res.status(409).send({message: "Movie already exist!"});
                     } else {
-                        if(!data[0].favorites){
+                        if (!data[0].favorites) {
                             data[0].favorites = [];
                         }
                         data[0].favorites.push(req.params.movieId);
@@ -103,15 +101,18 @@ exports.updateBookmarks = (req, res) => {
                         userId: req.params.userId,
                         favorites: data[0].favorites
                     }, {new: true}).then(saved => {
-                        console.log("removed or saved favorite done: ", saved);
-                        res.send(saved);
+                        console.log("saved favorite done: ", saved);
+                        return res.send(saved);
                     });
                 }
             }).catch(error => {
-                res.status(500).send({message: error.message || "Some error occurred while creating the bookmark."});
+                return res.status(500).send({
+                    message:
+                        error.message || "Some error occurred while creating the bookmark."
+                });
             });
         }).catch(error => {
-        res.status(500).send({message: error.message || "Some error occurred while creating the bookmark."});
+        return res.status(500).send({message: error.message || "Some error occurred while creating the bookmark."});
     });
 };
 
@@ -129,8 +130,52 @@ exports.bookmarks = (req, res) => {
         if (!bookmark) {
             return res.status(404).send({message: "bookmarks not found for userId " + req.params.userId});
         }
-        res.send(bookmark);
+        return res.send(bookmark);
     }).catch(error => {
-        res.status(500).send({message: error.message || "Some error occurred while creating the bookmark."});
+        return res.status(500).send({message: error.message || "Some error occurred while creating the bookmark."});
     });
+};
+
+exports.deleteBookmark = (req, res) => {
+
+    if (!req.session.loggedin || req.session.userId !== req.params.userId) {
+        return res.status(401).send({
+            message: "Unauthorized request"
+        });
+    }
+
+    users.findOne({_id: req.session.userId})
+        .then(user => {
+            if (!user) {
+                return res.status(404).send({message: "User Not Found"});
+            }
+            bookmarks.find({userId: req.session.userId}).then(data => {
+                if (data.length > 1) {
+                    return res.status(500).send({message: error.message || "data inconsistency."});
+                }
+                if (data.length === 0) {
+                    return res.status(404).send({message: "User Not Found."});
+                }
+                let index = data[0].favorites.indexOf(req.params.movieId);
+
+                if (index > -1) {
+                    data[0].favorites.splice(index, 1);
+                } else {
+                    res.status(404).send({message: "Movie Not Found."});
+                }
+
+                bookmarks.findByIdAndUpdate(data[0]._id, {
+                    userId: req.params.userId,
+                    favorites: data[0].favorites
+                }, {new: true}).then(deleted => {
+                    console.log("delete favorite done: ", deleted);
+                    return res.send(deleted);
+                });
+            }).catch(error => {
+                return res.status(500).send({message: error.message || "Some error occurred while creating the bookmark."});
+            });
+        }).catch(error => {
+        return res.status(500).send({message: error.message || "Some error occurred while deleting the bookmark."});
+    });
+
 };
