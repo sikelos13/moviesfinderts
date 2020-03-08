@@ -1,21 +1,17 @@
 import React, { memo } from 'react';
 import Box from '@material-ui/core/Box';
-import MovieContainer from '../components/MovieContainer';
+import MovieContainer from './MovieContainer';
 import { Movie } from '../types';
-import Header from '../components/Header'
-import { Container } from '@material-ui/core';
 
-interface BookmarksListProps {
+
+interface MoviesListProps {
     moviesList: Movie[]
     onAddToBookmarks: (movie: Movie) => void;
     onShowDetails: (movie: Movie) => void;
     totalMovies: number
 }
 
-const BookmarksList: React.FC<BookmarksListProps> = memo(({ moviesList,totalMovies, onShowDetails,onAddToBookmarks }: BookmarksListProps) => (
-    <>
-     <Header />
-            <Container>
+const MoviesList: React.FC<MoviesListProps> = memo(({ moviesList,totalMovies, onShowDetails,onAddToBookmarks }: MoviesListProps) => (
         <Box
             mt={2}
             display="flex"
@@ -38,8 +34,6 @@ const BookmarksList: React.FC<BookmarksListProps> = memo(({ moviesList,totalMovi
                 })
             }
         </Box>
-        </Container>
-        </>
 ));
 
-export default BookmarksList;
+export default MoviesList;

@@ -78,10 +78,6 @@ class Header extends Component<{}, HeaderState> {
                                     <Link to="/donations">Donate</Link>
                                 </li>
                             </ul>
-                            <Box alignSelf="center">
-                                <SvgIcon component={SearchIcon} />
-                            </Box>
-                            <input type="text" className="navbar-search" placeholder="Search movie by title..." />
                         </nav>
                         <Box alignSelf="center" display="flex">
                             <div className="user-button" onClick={this.handleDropmenu}>

@@ -3,21 +3,19 @@ import Header from '../components/Header'
 // import { BrowserRouter as Router, Route, NavLink, Switch, Redirect } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
-
-// import Paper from '@material-ui/core/Paper';
-// import InputBase from '@material-ui/core/InputBase';
-// import Divider from '@material-ui/core/Divider';
-// import IconButton from '@material-ui/core/IconButton';
-// import MenuIcon from '@material-ui/icons/Menu';
-// import SearchIcon from '@material-ui/icons/Search';
-// import DirectionsIcon from '@material-ui/icons/Directions';
+import axios from 'axios';
+import MoviesList from '../components/MoviesList';
 import _debounce from 'lodash-es/debounce';
-import { Movie } from '../types'
+import { Movie,MovieExtended } from '../types'
 import { Container } from '@material-ui/core';
+import history from "../history";
 interface DashboardState {
     inputSearch: string;
     results?: Movie[];
+    totalResults: number;
+    movie?: MovieExtended;
 }
+
 interface DashboardProps {
     username: string;
 }
@@ -27,9 +25,10 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
         super(props)
 
         this.state = {
-            inputSearch: ""
+            inputSearch: "",
+            totalResults: 0,
         }
-        // this.handleSearchInput = _debounce(this.handleSearchInput, 1000);
+        this.handleSearchInput = _debounce(this.handleSearchInput, 1000);
     }
  
     handleSearch = (e: any) => {
@@ -40,10 +39,39 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
 
     handleSearchInput = (value: string) => {
         console.log(value)
+            if (value !== "") {
+                axios.get(`http://localhost:8000/api/v1/search/movies?q=${value}`)
+                .then((res: any) => {
+                console.log(res);
+                if(res.status == 200) {
+                    this.setState({
+                        results: res.data.Search,
+                        totalResults: res.data.totalResults
+                    })
+                }
+                })
+        }else {
+            this.setState({
+                results: [],
+                totalResults: 0
+            })
+        }
+    }
+
+    onShowDetails = (movie: Movie) => {
+        if (movie) {
+          
+            history.push(`/${movie.imdbID}/details`, movie.imdbID)
+
+    }
+    }
+
+    onAddToBookmarks = (movie: Movie) => {
+
     }
 
     render() {
-        const { username } = this.props;
+        const { results, totalResults } = this.state;
 
         return (
             <>
@@ -65,7 +93,16 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
                                 }}
                                 variant="outlined"
                             />
+                           
                         </div>
+                        {results &&
+                                <MoviesList 
+                                    moviesList={results!}
+                                    onAddToBookmarks={this.onAddToBookmarks}
+                                    onShowDetails={this.onShowDetails}
+                                    totalMovies={totalResults}
+                                    />
+                            }
                     </Container>
                 </div>
             </>

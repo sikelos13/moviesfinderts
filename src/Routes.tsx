@@ -9,6 +9,7 @@ import { Container } from '@material-ui/core';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import Account from './containers/Account';
 import Notfound from './components/Notfound';
+import MovieDetails from './containers/MovieDetails';
 
 export default class Routes extends Component<{}, {}> {
     render() {
@@ -19,6 +20,7 @@ export default class Routes extends Component<{}, {}> {
                       <ProtectedRoute path="/dashboard" component={Dashboard} />
                       <ProtectedRoute path="/account-settings" component={Account} />
                       <ProtectedRoute path="/bookmarks" component={Bookmarks} />
+                      <ProtectedRoute path="/:id/details" component={MovieDetails} />
                       <Route exact path="/login" component={LoginIn} />
                       <Route exact path="/signup" component={SignUp} />
                       <Route component={Notfound} />
