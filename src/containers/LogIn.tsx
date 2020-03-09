@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import { BrowserRouter as Router, Route, NavLink, Switch, Redirect } from 'react-router-dom';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -34,12 +33,17 @@ class LogIn extends Component<{}, LogInState> {
     submitSignInForm = () => {
         const { form } = this.state;
         if (this.handleFormValidation(form)) {
-            axios.post(`http://localhost:8000/api/v1/login`, { username: form.username, password: form.password })
+            axios.post(`http://localhost:8000/api/v1/account/login`, { username: form.username, password: form.password })
             .then((res: any) => {
-              console.log(res);
               if(res.status == 200) {
+                  const data = {
+                    username: res.data.username,
+                    password: res.data.password,
+                    id: res.data._id
+                }
+
                 localStorage.setItem(`isAuthorized`, JSON.stringify(true));
-                localStorage.setItem('user', JSON.stringify(form));
+                localStorage.setItem('user', JSON.stringify(data));
                 history.push('./dashboard');
 
               }
@@ -67,21 +71,6 @@ class LogIn extends Component<{}, LogInState> {
         }else {
             return true
         }
-        // } else if (form.password !== parsedUser.password) {
-        //     this.setState({
-        //         formIsValid: false,
-        //         formErrorText: "Invalid password"
-        //     })
-        //     return false;
-        // } else if (form.username !== parsedUser.username) {
-        //     this.setState({
-        //         formIsValid: false,
-        //         formErrorText: "Invalid username"
-        //     })
-        //     return false
-        // } else if (parsedUser && parsedUser.username === form.username && parsedUser.password === form.password) {
-        //     return true;
-        // }
     }
 
     onChangeFormInput = (event: any) => {
@@ -99,7 +88,7 @@ class LogIn extends Component<{}, LogInState> {
     }
 
     redirectToSignUp = () => {
-        history.push('./signup');
+        history.push('/signup');
     }
 
     render() {

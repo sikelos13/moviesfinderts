@@ -1,45 +1,80 @@
-import React, { memo } from 'react';
-import Box from '@material-ui/core/Box';
-import MovieContainer from '../components/MovieContainer';
-import { Movie } from '../types';
+import React, { Component, Fragment } from 'react';
 import Header from '../components/Header'
+import Box from '@material-ui/core/Box';
+import axios from 'axios';
+import MoviesList from '../components/MoviesList';
+import _debounce from 'lodash-es/debounce';
+import { Movie, MovieExtended } from '../types'
 import { Container } from '@material-ui/core';
-
-interface BookmarksListProps {
-    moviesList: Movie[]
-    onAddToBookmarks: (movie: Movie) => void;
-    onShowDetails: (movie: Movie) => void;
-    totalMovies: number
+import history from "../history";
+interface BookmarksState {
+    results?: Movie[];
+    totalResults: number;
+    moviesList?: Movie[];
 }
 
-const BookmarksList: React.FC<BookmarksListProps> = memo(({ moviesList,totalMovies, onShowDetails,onAddToBookmarks }: BookmarksListProps) => (
-    <>
-     <Header />
-            <Container>
-        <Box
-            mt={2}
-            display="flex"
-            overflow="auto"
-            flexDirection="row"
-            flexWrap="wrap"
-            justifyContent="space-evenly"
-        >
-            {
-                moviesList.map((movie: Movie) => {
-                    return (
-                        <MovieContainer
-                            key={movie.imdbID}
-                            movie={movie}
-                            totalMovies={totalMovies}
-                            onAddToBookmarks={onAddToBookmarks.bind(null, movie)}
-                            onShowDetails={onShowDetails.bind(null, movie)}
-                        />
-                    );
-                })
-            }
-        </Box>
-        </Container>
-        </>
-));
+class Bookmarks extends Component<{}, BookmarksState> {
+    constructor(props: any) {
+        super(props)
 
-export default BookmarksList;
+        this.state = {
+            totalResults: 0,
+        }
+    }
+
+    componentDidMount() {
+        const user: any = localStorage.getItem('user');
+        const parsedUser = JSON.parse(user);
+
+        axios.get(`http://localhost:8000/api/v1/account/${parsedUser.id}/favorite`)
+            .then((res: any) => {
+                if (res.status == 200) {
+                    this.setState({
+                        results: res.data.Search,
+                        totalResults: res.data.totalResults
+                    })
+                }
+            })
+    }
+
+    onShowDetails = (movie: Movie) => {
+        if (movie) {
+            history.push(`/${movie.imdbID}/details`, movie.imdbID)
+        }
+    }
+
+    onAddToBookmarks = (movie: Movie) => {
+
+    }
+
+    render() {
+        const { moviesList, results, totalResults } = this.state
+
+        return (
+            <>
+                <Header />
+                <Container>
+                    <Box
+                        mt={2}
+                        display="flex"
+                        overflow="auto"
+                        flexDirection="row"
+                        flexWrap="wrap"
+                        justifyContent="space-evenly"
+                    >
+                            {moviesList &&
+                                <MoviesList
+                                    moviesList={results!}
+                                    onAddToBookmarks={this.onAddToBookmarks}
+                                    onShowDetails={this.onShowDetails}
+                                    totalMovies={totalResults}
+                                />
+                            }
+                    </Box>
+                </Container>
+            </>
+        );
+    }
+}
+
+export default Bookmarks;

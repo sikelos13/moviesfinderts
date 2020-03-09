@@ -25,7 +25,7 @@ export class ProtectedRoute extends Component<any, {}> {
                     <>
                     {isAuthenticated(isAuthorized)
                         ? <Component {...props} />
-                        : <Redirect to='/login' />
+                        : <Redirect to='/' />
                     }
                     </>
                 )}

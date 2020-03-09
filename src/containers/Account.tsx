@@ -7,6 +7,7 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Box from '@material-ui/core/Box';
+import axios from 'axios';
 
 interface AccountSettingsState {
     formIsValid: boolean;
@@ -56,7 +57,53 @@ class Account extends Component<{}, AccountSettingsState> {
     }
 
     saveSettings = () => {
+        const { form } = this.state;
+        const user: any = localStorage.getItem('user');
+        const parsedUser = JSON.parse(user);
 
+        if (this.handleFormValidation(form)) {
+             axios.put(`http://localhost:8000/api/v1/users/${parsedUser.id}`, { username: form.username, password: form.password })
+            .then((res: any) => {
+              if(res.status == 200) {
+                const data = {
+                    username: res.data.username,
+                    password: res.data.password,
+                }
+                console.log(res)
+                localStorage.setItem(`isAuthorized`, JSON.stringify(true));
+                localStorage.setItem('user', JSON.stringify(data));
+
+              }
+            })
+        }
+    }
+
+    clearForm = () => {
+        this.setState({
+            form: {
+                username: "",
+                password: "",
+                verify_password: ""
+            }
+        })
+    }
+
+    handleFormValidation = (form: any) => {
+        if (form.username === "" || form.password === "" || form.verify_password === "") {
+            this.setState({
+                formIsValid: false,
+                formErrorText: "Please fill all the fields in you account form"
+            })
+            return false;
+        } else if (form.password !== form.verify_password) {
+            this.setState({
+                formIsValid: false,
+                formErrorText: "Passwords don't match"
+            })
+            return false;
+        } else {
+            return true
+        }
     }
 
     render() {
@@ -88,7 +135,6 @@ class Account extends Component<{}, AccountSettingsState> {
                                     <Input type="password" name="verify_password" id="account-input-field" placeholder="Verify new password" disableUnderline={true} onChange={this.onChangeFormInput} />
                                 </FormControl>
                                 <button className="signup-button" onClick={this.saveSettings}><span className="account-button-text">Save</span></button>
-
                             </Box>
                         </Box>
                     </Box>

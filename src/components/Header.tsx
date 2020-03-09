@@ -5,12 +5,10 @@ import { Box, Breadcrumbs, Input, Button, Menu, MenuItem } from '@material-ui/co
 import HeaderLogo from '../images/header-logo.png'
 import { SvgIcon } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import SearchIcon from '@material-ui/icons/Search';
 import HomeIcon from '@material-ui/icons/Home';
 import BookmarksIcon from '@material-ui/icons/Bookmarks';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import history from '../history'
-import {ProtectedRoute}  from '../components/ProtectedRoute';
 
 interface HeaderState {
     username: string;
@@ -30,7 +28,6 @@ class Header extends Component<{}, HeaderState> {
         const user: any = localStorage.getItem('user');
         const parsedUser = JSON.parse(user);
 
-        console.log(parsedUser)
         this.setState({ username: parsedUser && parsedUser != null && parsedUser.username})
     }
 
@@ -45,7 +42,7 @@ class Header extends Component<{}, HeaderState> {
     handleLogout = () => {
         this.setAnchorEl(null);
         localStorage.clear();
-        history.push('/login');
+        history.push('/');
     }
 
     handleAccount = () => {

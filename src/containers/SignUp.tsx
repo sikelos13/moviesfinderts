@@ -36,14 +36,20 @@ class SignUp extends Component<{}, SignUpState> {
 
     submitSignUpForm = () => {
         const { form } = this.state;
-       
+
         if (this.handleFormValidation(form)) {
-    
+        
             axios.post(`http://localhost:8000/api/v1/user`, { username: form.username, password: form.password })
             .then((res: any) => {
               if(res.status == 200) {
+                const data = {
+                    username: res.data.username,
+                    password: res.data.password,
+                    id: res.data._id
+                }
+                
                 localStorage.setItem(`isAuthorized`, JSON.stringify(true));
-                localStorage.setItem('user', JSON.stringify(form));
+                localStorage.setItem('user', JSON.stringify(data));
                 history.push('./dashboard');
               }
             })
@@ -90,7 +96,7 @@ class SignUp extends Component<{}, SignUpState> {
     }
 
     redirectToSignIn = () => {
-        history.push('./login');
+        history.push('/');
     }
 
     render() {
