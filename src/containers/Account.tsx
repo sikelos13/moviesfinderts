@@ -62,7 +62,7 @@ class Account extends Component<{}, AccountSettingsState> {
         const parsedUser = JSON.parse(user);
 
         if (this.handleFormValidation(form)) {
-             axios.put(`http://localhost:8000/api/v1/users/${parsedUser.id}`, { username: form.username, password: form.password })
+             axios.put(`http://localhost:8000/api/v1/users/${parsedUser.id}`, { username: form.username, password: form.password },{withCredentials: true})
             .then((res: any) => {
               if(res.status == 200) {
                 const data = {

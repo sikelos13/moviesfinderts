@@ -29,7 +29,11 @@ exports.create = (req, res) => {
         user.save()
             .then(data => {
                 console.log("save user done: ", data);
-                data.password = users.generateHash(data.password)
+                data.password = users.generateHash(data.password);
+                req.session.loggedin = true;
+                req.session.userId = data._id;
+                console.log("saved user done: ", req.sessionID);
+
                 res.send(data);
             }).catch(error => {
             res.status(500).send({

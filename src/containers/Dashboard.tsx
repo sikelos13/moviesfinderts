@@ -40,7 +40,7 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
     handleSearchInput = (value: string) => {
         console.log(value)
             if (value !== "") {
-                axios.get(`http://localhost:8000/api/v1/search/movies?q=${value}`)
+                axios.get(`http://localhost:8000/api/v1/search/movies?q=${value}`,{withCredentials: true})
                 .then((res: any) => {
                 console.log(res);
                 if(res.status == 200) {

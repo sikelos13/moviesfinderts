@@ -52,6 +52,8 @@ exports.logout = (req, res) => {
 };
 
 exports.updateBookmarks = (req, res) => {
+    console.log("saved favorite done: ", req.session.loggedin ,"  ", req.session.userId);
+    console.log("saved favorite done: ", req.sessionID);
 
     if (!req.session.loggedin || req.session.userId !== req.params.userId) {
         return res.status(401).send({

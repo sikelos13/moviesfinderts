@@ -28,7 +28,7 @@ class MovieDetails extends Component<{}, MovieDetailsState> {
     componentDidMount() {
         let movieId= history.location.state
         
-        axios.get(`http://localhost:8000/api/v1/search/movie/${movieId}`)
+        axios.get(`http://localhost:8000/api/v1/search/movie/${movieId}`,{withCredentials: true})
             .then((res: any) => {
             if(res.status == 200) {
                 this.setState({
@@ -49,7 +49,7 @@ class MovieDetails extends Component<{}, MovieDetailsState> {
         const user: any = localStorage.getItem('user');
         const parsedUser = JSON.parse(user);
 
-            axios.put(`http://localhost:8000/api/v1/account/${parsedUser.id}/favorite/${movieId}`)
+            axios.put(`http://localhost:8000/api/v1/account/${parsedUser.id}/favorite/${movieId}`,"",{withCredentials: true})
             .then((res: any) => {
             if(res.status == 200) {
                 this.setState({

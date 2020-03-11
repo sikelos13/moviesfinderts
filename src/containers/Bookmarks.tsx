@@ -26,7 +26,7 @@ class Bookmarks extends Component<{}, BookmarksState> {
         const user: any = localStorage.getItem('user');
         const parsedUser = JSON.parse(user);
 
-        axios.get(`http://localhost:8000/api/v1/account/${parsedUser.id}/favorite`)
+        axios.get(`http://localhost:8000/api/v1/account/${parsedUser.id}/favorite`,{withCredentials: true})
             .then((res: any) => {
                 if (res.status == 200) {
                     this.setState({

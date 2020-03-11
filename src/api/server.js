@@ -10,7 +10,7 @@ app.use(session({
     saveUninitialized: true
 }));
 
-app.use(cors());
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -44,7 +44,7 @@ app.use('/api/v1/search', movieRouter);
 app.use('/api/v1/account', accountRouter);
 
 // listen for requests
-app.listen(8000, (err) => {
+app.listen(8000,'localhost', (err) => {
     if (err) {
         return console.log('something bad happened', err)
     }
