@@ -3,29 +3,38 @@
 
 This is an end-to-end search dashboard for education purposes.Build with create-react-app and typescript template and for the backend node.js.
 
-## Getting Started
+## Build With
 
-Clone the repository and npm install the dependecies.
+* [NodeJs](https://nodejs.org/en/)
+* [Material UI](https://material-ui.com/)
+* [Create-react-app with Typescript template](https://create-react-app.dev/docs/adding-typescript/)
+
+### Prerequisites
+
+The project is running on nodeJs.
+
+
+If you want to run in development mode then:
+
+```
+cd moviesfinderts
+
+npm install
+npm start
+```
 
 ## How it Works
 
 Run the app with `npm run start` . The server listens to :8000 port and frontend at :3000. 
 For storing data we are using a in-memory MongoDB that you can connect with mongodb://localhost:27017/movieFinder 
+The user can navigate through the navigation bar and search for movies and save them to its bookmarks.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Features implemented
+* Search field with debounce for searching movies
+* Show details button for redirecting to details page of the selected movie.
+* Add to favorites button
+* Remove from favorites button with on fly deletation from the list
+* User can edit it's own account settings.
 
 ## How We built the Scripting/Parsing Tool.
 
