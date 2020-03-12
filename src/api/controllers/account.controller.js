@@ -1,7 +1,8 @@
 const users = require('../models/users.model');
 const bookmarks = require('../models/bookmarks.model');
 const mongoose = require('mongoose');
-
+const http = require('http');
+const async = require('async');
 
 exports.login = (req, res) => {
 
@@ -52,7 +53,7 @@ exports.logout = (req, res) => {
 };
 
 exports.updateBookmarks = (req, res) => {
-    console.log("saved favorite done: ", req.session.loggedin ,"  ", req.session.userId);
+    console.log("saved favorite done: ", req.session.loggedin, "  ", req.session.userId);
     console.log("saved favorite done: ", req.sessionID);
 
     if (!req.session.loggedin || req.session.userId !== req.params.userId) {
@@ -129,10 +130,38 @@ exports.bookmarks = (req, res) => {
 
     bookmarks.findOne({userId: req.params.userId}).then(bookmark => {
         console.log("retrieved ", bookmark);
-        if (!bookmark) {
+        if (!bookmark || bookmark.favorites.length === 0) {
             return res.status(404).send({message: "bookmarks not found for userId " + req.params.userId});
         }
-        return res.send(bookmark);
+
+        var movieData = [];
+        async.filter(bookmark.favorites, function (favorites, callback) {
+            let url = "http://www.omdbapi.com/?apikey=20b99170&i=" + favorites + "&type=movie";
+
+            http.get(url, (resp) => {
+                resp.setEncoding('utf8');
+                let rawData = '';
+                resp.on('data', (chunk) => {
+                    rawData += chunk;
+                });
+                resp.on('end', () => {
+                    try {
+                        let parsedData = JSON.parse(rawData);
+                        console.log(parsedData);
+                        movieData.push(parsedData);
+                        callback(null, parsedData);
+                    } catch (e) {
+                        console.error(e.message);
+                        callback(null);
+                    }
+                });
+            }).on("error", (err) => {
+                console.log("Error: " + err.message);
+                callback(null);
+            });
+        }, function (err,results) {
+            return res.send(movieData);
+        })
     }).catch(error => {
         return res.status(500).send({message: error.message || "Some error occurred while creating the bookmark."});
     });
