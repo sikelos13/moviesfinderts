@@ -6,12 +6,13 @@ import { Movie } from '../types';
 
 interface MoviesListProps {
     moviesList: Movie[]
-    onAddToBookmarks: (movie: Movie) => void;
+    onHandleBookmark: (movie: Movie) => void;
     onShowDetails: (movie: Movie) => void;
     totalMovies: number
+    isBookmark?: boolean
 }
 
-const MoviesList: React.FC<MoviesListProps> = memo(({ moviesList,totalMovies, onShowDetails,onAddToBookmarks }: MoviesListProps) => (
+const MoviesList: React.FC<MoviesListProps> = memo(({ isBookmark,moviesList,onHandleBookmark,totalMovies, onShowDetails }: MoviesListProps) => (
         <Box
             mt={2}
             display="flex"
@@ -27,7 +28,8 @@ const MoviesList: React.FC<MoviesListProps> = memo(({ moviesList,totalMovies, on
                             key={movie.imdbID}
                             movie={movie}
                             totalMovies={totalMovies}
-                            onAddToBookmarks={onAddToBookmarks.bind(null, movie)}
+                            onHandleBookmark={onHandleBookmark.bind(null, movie)!}
+                            isBookmark={isBookmark!}
                             onShowDetails={onShowDetails.bind(null, movie)}
                         />
                     );

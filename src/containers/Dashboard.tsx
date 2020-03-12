@@ -66,7 +66,7 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
     }
     }
 
-    onAddToBookmarks = (movie: Movie) => {
+    onHandleBookmark = (movie: Movie) => {
 
     }
 
@@ -98,7 +98,7 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
                         {results &&
                                 <MoviesList 
                                     moviesList={results!}
-                                    onAddToBookmarks={this.onAddToBookmarks}
+                                    onHandleBookmark={this.onHandleBookmark}
                                     onShowDetails={this.onShowDetails}
                                     totalMovies={totalResults}
                                     />
