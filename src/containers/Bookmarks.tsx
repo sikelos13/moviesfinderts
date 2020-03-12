@@ -1,8 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import Header from '../components/Header'
 import axios from 'axios';
 import MoviesList from '../components/MoviesList';
-import _debounce from 'lodash-es/debounce';
 import { Movie, MovieExtended } from '../types'
 import { Container } from '@material-ui/core';
 import history from "../history";
@@ -11,7 +10,6 @@ interface BookmarksState {
     moviesIdList?: number[];
     totalResults: number;
     moviesList: MovieExtended[];
-    // isBookmark: boolean;
 }
 
 class Bookmarks extends Component<{}, BookmarksState> {
@@ -62,7 +60,6 @@ class Bookmarks extends Component<{}, BookmarksState> {
                     this.setState({moviesList: filteredArray})
                 })
         }
-
     }
 
     render() {

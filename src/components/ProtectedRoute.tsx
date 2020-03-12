@@ -5,7 +5,7 @@ const isAuthenticated = (auth: string | null) => {
 
     if(auth === 'true') {
         return true;
-    } else if(auth == undefined || auth == null) {
+    } else if(auth === undefined || auth === null) {
         return false;
     } else {
         return false

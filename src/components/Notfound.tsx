@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import NotFoundLogo from '../images/notfound.png'
 import { Container, Box } from '@material-ui/core';
 

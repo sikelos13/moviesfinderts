@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { NavLink, withRouter, RouteComponentProps, Link } from 'react-router-dom';
-import { Route, Switch, Redirect } from 'react-router-dom';
-import { Box, Breadcrumbs, Input, Button, Menu, MenuItem } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
+import { Box, Breadcrumbs, Menu, MenuItem } from '@material-ui/core';
 import HeaderLogo from '../images/header-logo.png'
 import { SvgIcon } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';

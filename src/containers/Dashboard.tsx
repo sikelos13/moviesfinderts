@@ -1,7 +1,6 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import Header from '../components/Header'
 import TextField from '@material-ui/core/TextField';
-import Box from '@material-ui/core/Box';
 import axios from 'axios';
 import MoviesList from '../components/MoviesList';
 import _debounce from 'lodash-es/debounce';

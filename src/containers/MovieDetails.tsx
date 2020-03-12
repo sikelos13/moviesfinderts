@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Container, Button } from '@material-ui/core';
 import Header from '../components/Header'
 import Box from '@material-ui/core/Box';
@@ -20,12 +20,13 @@ class MovieDetails extends Component<{}, MovieDetailsState> {
             favoriteMessage: ""
         };
     }
+
     componentDidMount() {
         let movieId = history.location.state
 
         axios.get(`http://localhost:8000/api/v1/search/movie/${movieId}`, { withCredentials: true })
             .then((res: any) => {
-                if (res.status == 200) {
+                if (res.status === 200) {
                     this.setState({
                         movie: res.data,
                     })

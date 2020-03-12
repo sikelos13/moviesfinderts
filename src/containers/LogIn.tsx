@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -36,7 +36,7 @@ class LogIn extends Component<{}, LogInState> {
         if (this.handleFormValidation(form)) {
             axios.post(`http://localhost:8000/api/v1/account/login`, { username: form.username, password: form.password }, { withCredentials: true })
                 .then((res: any) => {
-                    if (res.status == 200) {
+                    if (res.status === 200) {
                         const data = {
                             username: res.data.username,
                             password: res.data.password,
@@ -48,9 +48,14 @@ class LogIn extends Component<{}, LogInState> {
                         history.push('./dashboard');
 
                     }
+                }).catch(err => {
+                    this.setState({
+                        formIsValid: false,
+                        formErrorText: err.response.data.message
                 })
-        }
+        })
     }
+}
 
     clearError = () => {
         this.setState({
@@ -60,7 +65,6 @@ class LogIn extends Component<{}, LogInState> {
     }
 
     handleFormValidation = (form: any) => {
-        const user: any = localStorage.getItem('user');
 
         if (form.password === "" || form.username === "") {
             this.setState({
@@ -92,7 +96,7 @@ class LogIn extends Component<{}, LogInState> {
     }
 
     render() {
-        const { formIsValid, formErrorText, form } = this.state
+        const { formIsValid, formErrorText } = this.state
 
         return (
             <Box width="100%" height="720px" display="flex" justifyContent="center">

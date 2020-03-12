@@ -1,10 +1,8 @@
-import React, { Component, Fragment } from 'react';
-// import { BrowserRouter as Router, Route, NavLink, Switch, Redirect } from 'react-router-dom';
+import React, { Component } from 'react';
 import { Container } from '@material-ui/core';
 import Header from '../components/Header'
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Box from '@material-ui/core/Box';
 import axios from 'axios';
@@ -64,7 +62,7 @@ class Account extends Component<{}, AccountSettingsState> {
         if (this.handleFormValidation(form)) {
              axios.put(`http://localhost:8000/api/v1/users/${parsedUser.id}`, { username: form.username, password: form.password },{withCredentials: true})
             .then((res: any) => {
-              if(res.status == 200) {
+              if(res.status === 200) {
                   console.log(res.data)
                 const data = {
                     id: res.data._id,
