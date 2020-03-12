@@ -8,10 +8,12 @@ export interface MovieState {
 
 export interface Movie {
     Title: string;
-    Year: string
-    imdbID: string
-    Type: string
-    Poster: string
+    Year: string;
+    imdbID: string;
+    Type: string;
+    Poster: string;
+    isBookmarked: boolean;
+    errorMessage?: string;
 }
 
 export interface MovieExtended extends Movie{
@@ -35,7 +37,7 @@ export interface MovieExtended extends Movie{
     BoxOffice: string
     Production: string
     Website: string
-    Response: string
+    Response: string;
 }
 
 interface Ratings {

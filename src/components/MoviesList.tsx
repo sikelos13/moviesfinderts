@@ -9,10 +9,9 @@ interface MoviesListProps {
     onHandleBookmark: (movie: Movie) => void;
     onShowDetails: (movie: Movie) => void;
     totalMovies: number
-    isBookmark?: boolean
 }
 
-const MoviesList: React.FC<MoviesListProps> = memo(({ isBookmark,moviesList,onHandleBookmark,totalMovies, onShowDetails }: MoviesListProps) => (
+const MoviesList: React.FC<MoviesListProps> = memo(({ moviesList,onHandleBookmark,totalMovies, onShowDetails }: MoviesListProps) => (
         <Box
             mt={2}
             display="flex"
@@ -29,7 +28,6 @@ const MoviesList: React.FC<MoviesListProps> = memo(({ isBookmark,moviesList,onHa
                             movie={movie}
                             totalMovies={totalMovies}
                             onHandleBookmark={onHandleBookmark.bind(null, movie)!}
-                            isBookmark={isBookmark!}
                             onShowDetails={onShowDetails.bind(null, movie)}
                         />
                     );

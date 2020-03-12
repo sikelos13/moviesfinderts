@@ -38,21 +38,21 @@ class SignUp extends Component<{}, SignUpState> {
         const { form } = this.state;
 
         if (this.handleFormValidation(form)) {
-        
-            axios.post(`http://localhost:8000/api/v1/user`, { username: form.username, password: form.password },{withCredentials: true})
-            .then((res: any) => {
-              if(res.status == 200) {
-                const data = {
-                    username: res.data.username,
-                    password: res.data.password,
-                    id: res.data._id
-                }
-                
-                localStorage.setItem(`isAuthorized`, JSON.stringify(true));
-                localStorage.setItem('user', JSON.stringify(data));
-                history.push('./dashboard');
-              }
-            })
+
+            axios.post(`http://localhost:8000/api/v1/user`, { username: form.username, password: form.password }, { withCredentials: true })
+                .then((res: any) => {
+                    if (res.status == 200) {
+                        const data = {
+                            username: res.data.username,
+                            password: res.data.password,
+                            id: res.data._id
+                        }
+
+                        localStorage.setItem(`isAuthorized`, JSON.stringify(true));
+                        localStorage.setItem('user', JSON.stringify(data));
+                        history.push('./dashboard');
+                    }
+                })
         }
     }
 
@@ -100,8 +100,8 @@ class SignUp extends Component<{}, SignUpState> {
     }
 
     render() {
-        const { formIsValid, formErrorText} = this.state
-       
+        const { formIsValid, formErrorText } = this.state
+
         return (
             <Box width="100%" height="720px" display="flex" justifyContent="center">
                 <Box width="100%" display="flex" justifyContent="space-around" alignItems="center">

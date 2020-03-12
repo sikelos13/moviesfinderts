@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import Header from '../components/Header'
-import Box from '@material-ui/core/Box';
 import axios from 'axios';
 import MoviesList from '../components/MoviesList';
 import _debounce from 'lodash-es/debounce';
@@ -12,7 +11,7 @@ interface BookmarksState {
     moviesIdList?: number[];
     totalResults: number;
     moviesList: MovieExtended[];
-    isBookmark: boolean;
+    // isBookmark: boolean;
 }
 
 class Bookmarks extends Component<{}, BookmarksState> {
@@ -22,7 +21,6 @@ class Bookmarks extends Component<{}, BookmarksState> {
         this.state = {
             totalResults: 0,
             moviesList: [],
-            isBookmark: true
         }
     }
 
@@ -33,7 +31,14 @@ class Bookmarks extends Component<{}, BookmarksState> {
        await axios.get(`http://localhost:8000/api/v1/account/${parsedUser.id}/favorite`, { withCredentials: true })
             .then((res: any) => res.data)
             .then((data: any) => {
-                    this.setState({moviesList: data.Search})
+                    const newData = data.map((item: Movie) => {
+                        const movie = {
+                            ...item,
+                            isBookmarked: true
+                        }
+                        return movie;
+                    })
+                    this.setState({moviesList: newData})
                 })
     }
 
@@ -44,35 +49,38 @@ class Bookmarks extends Component<{}, BookmarksState> {
     }
 
     onHandleBookmark = (movie: Movie) => {
+        const { moviesList } = this.state;
+        const user: any = localStorage.getItem('user');
+        const parsedUser = JSON.parse(user);
+
+        if(movie.isBookmarked) {
+             axios.delete(`http://localhost:8000/api/v1/account/${parsedUser.id}/favorite/${movie.imdbID}`, { withCredentials: true })
+            .then((res: any) => {
+                const filteredArray = moviesList.filter((item: Movie) => {
+                    return item.imdbID !== movie.imdbID;
+                });
+                    this.setState({moviesList: filteredArray})
+                })
+        }
 
     }
 
     render() {
-        const { moviesList, totalResults,isBookmark } = this.state
+        const { moviesList, totalResults } = this.state
 
         return (
             <>
                 <Header />
                 <Container>
                 <h1 className="main-header">My Bookmarks</h1>
-                    <Box
-                        mt={2}
-                        display="flex"
-                        overflow="auto"
-                        flexDirection="row"
-                        flexWrap="wrap"
-                        justifyContent="space-evenly"
-                    >
                         {moviesList && moviesList.length > 0 &&
                             <MoviesList
                                 moviesList={moviesList}
-                                isBookmark={isBookmark}
                                 onHandleBookmark={this.onHandleBookmark}
                                 onShowDetails={this.onShowDetails}
                                 totalMovies={totalResults}
                             />
                         }
-                    </Box>
                 </Container>
             </>
         );

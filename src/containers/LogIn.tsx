@@ -32,23 +32,23 @@ class LogIn extends Component<{}, LogInState> {
     }
     submitSignInForm = () => {
         const { form } = this.state;
+
         if (this.handleFormValidation(form)) {
-            axios.post(`http://localhost:8000/api/v1/account/login`, { username: form.username, password: form.password },{withCredentials: true})
-            .then((res: any) => {
-              if(res.status == 200) {
-                  const data = {
-                    username: res.data.username,
-                    password: res.data.password,
-                    id: res.data._id
-                }
+            axios.post(`http://localhost:8000/api/v1/account/login`, { username: form.username, password: form.password }, { withCredentials: true })
+                .then((res: any) => {
+                    if (res.status == 200) {
+                        const data = {
+                            username: res.data.username,
+                            password: res.data.password,
+                            id: res.data._id
+                        }
 
-                localStorage.setItem(`isAuthorized`, JSON.stringify(true));
-                localStorage.setItem('user', JSON.stringify(data));
-                history.push('./dashboard');
+                        localStorage.setItem(`isAuthorized`, JSON.stringify(true));
+                        localStorage.setItem('user', JSON.stringify(data));
+                        history.push('./dashboard');
 
-              }
-              console.log(res.data);
-            })
+                    }
+                })
         }
     }
 
@@ -68,7 +68,7 @@ class LogIn extends Component<{}, LogInState> {
                 formErrorText: "Please fill all the fields in you sign up form"
             })
             return false;
-        }else {
+        } else {
             return true
         }
     }
@@ -92,8 +92,8 @@ class LogIn extends Component<{}, LogInState> {
     }
 
     render() {
-        const { formIsValid, formErrorText,form } = this.state
-   
+        const { formIsValid, formErrorText, form } = this.state
+
         return (
             <Box width="100%" height="720px" display="flex" justifyContent="center">
                 <Box width="100%" display="flex" justifyContent="space-around" alignItems="center">
