@@ -65,11 +65,13 @@ class Account extends Component<{}, AccountSettingsState> {
              axios.put(`http://localhost:8000/api/v1/users/${parsedUser.id}`, { username: form.username, password: form.password },{withCredentials: true})
             .then((res: any) => {
               if(res.status == 200) {
+                  console.log(res.data)
                 const data = {
+                    id: res.data._id,
                     username: res.data.username,
                     password: res.data.password,
                 }
-                console.log(res)
+                 this.clearForm();
                 localStorage.setItem(`isAuthorized`, JSON.stringify(true));
                 localStorage.setItem('user', JSON.stringify(data));
 

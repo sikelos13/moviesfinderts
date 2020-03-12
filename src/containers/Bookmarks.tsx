@@ -7,10 +7,12 @@ import _debounce from 'lodash-es/debounce';
 import { Movie, MovieExtended } from '../types'
 import { Container } from '@material-ui/core';
 import history from "../history";
+
 interface BookmarksState {
-    results?: Movie[];
+    moviesIdList?: number[];
     totalResults: number;
-    moviesList?: Movie[];
+    moviesList: MovieExtended[];
+    isBookmark: boolean;
 }
 
 class Bookmarks extends Component<{}, BookmarksState> {
@@ -19,22 +21,20 @@ class Bookmarks extends Component<{}, BookmarksState> {
 
         this.state = {
             totalResults: 0,
+            moviesList: [],
+            isBookmark: true
         }
     }
 
-    componentDidMount() {
+   async componentDidMount() {
         const user: any = localStorage.getItem('user');
         const parsedUser = JSON.parse(user);
 
-        axios.get(`http://localhost:8000/api/v1/account/${parsedUser.id}/favorite`,{withCredentials: true})
-            .then((res: any) => {
-                if (res.status == 200) {
-                    this.setState({
-                        results: res.data.Search,
-                        totalResults: res.data.totalResults
-                    })
-                }
-            })
+       await axios.get(`http://localhost:8000/api/v1/account/${parsedUser.id}/favorite`, { withCredentials: true })
+            .then((res: any) => res.data)
+            .then((data: any) => {
+                    this.setState({moviesList: data.Search})
+                })
     }
 
     onShowDetails = (movie: Movie) => {
@@ -43,17 +43,18 @@ class Bookmarks extends Component<{}, BookmarksState> {
         }
     }
 
-    onAddToBookmarks = (movie: Movie) => {
+    onHandleBookmark = (movie: Movie) => {
 
     }
 
     render() {
-        const { moviesList, results, totalResults } = this.state
+        const { moviesList, totalResults,isBookmark } = this.state
 
         return (
             <>
                 <Header />
                 <Container>
+                <h1 className="main-header">My Bookmarks</h1>
                     <Box
                         mt={2}
                         display="flex"
@@ -62,14 +63,15 @@ class Bookmarks extends Component<{}, BookmarksState> {
                         flexWrap="wrap"
                         justifyContent="space-evenly"
                     >
-                            {moviesList &&
-                                <MoviesList
-                                    moviesList={results!}
-                                    onAddToBookmarks={this.onAddToBookmarks}
-                                    onShowDetails={this.onShowDetails}
-                                    totalMovies={totalResults}
-                                />
-                            }
+                        {moviesList && moviesList.length > 0 &&
+                            <MoviesList
+                                moviesList={moviesList}
+                                isBookmark={isBookmark}
+                                onHandleBookmark={this.onHandleBookmark}
+                                onShowDetails={this.onShowDetails}
+                                totalMovies={totalResults}
+                            />
+                        }
                     </Box>
                 </Container>
             </>

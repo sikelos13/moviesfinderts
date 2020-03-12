@@ -12,13 +12,14 @@ import { Movie } from '../types';
 interface MovieContainerProps {
   movie: Movie;
   totalMovies: number;
-  onAddToBookmarks: () => void;
+  isBookmark: boolean;
+  onHandleBookmark: () => void;
   onShowDetails: () => void;
 }
 
 const useStyles = makeStyles(theme => ({
     root: {
-      width: 345,
+      width: 320,
       minHeight: 400,
       marginBottom: '8px'
     },
@@ -28,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 
   }));
 
-const MovieContainer: React.FC<MovieContainerProps> = ({  onShowDetails,onAddToBookmarks, movie, }: MovieContainerProps) => {
+const MovieContainer: React.FC<MovieContainerProps> = ({  isBookmark,onShowDetails,onHandleBookmark, movie, }: MovieContainerProps) => {
     const classes = useStyles();
 
     return (
@@ -52,9 +53,13 @@ const MovieContainer: React.FC<MovieContainerProps> = ({  onShowDetails,onAddToB
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button size="small" color="primary">
-            Add to Bookmarks
-          </Button>
+          
+            <Button size="small" onClick={onHandleBookmark} color="primary">
+            {isBookmark 
+                ? "Remove from Bookmarks"
+                : "Add to Bookmarks"
+            }
+            </Button>
           <Button size="small" color="primary" onClick={onShowDetails}>
             Learn More
           </Button>
