@@ -113,6 +113,11 @@
         color: #200C0E;
         font-size: 14px;
     }
+
+    &[type=text] {
+        color: white;
+        font-size: 14px;
+      }
 }
 
 .user-button {

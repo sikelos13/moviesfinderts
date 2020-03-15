@@ -1,69 +1,30 @@
 import React, { Component } from 'react'
-import { Route, Switch, Redirect} from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Dashboard from "./containers/Dashboard";
 import LoginIn from "./containers/LogIn";
 import SignUp from "./containers/SignUp";
-// import PrivateRoute from "./helpers/PrivateRoute";
-import Header from './components/Header'
 import Bookmarks from "./containers/Bookmarks";
-import { Container } from '@material-ui/core';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import Account from './containers/Account';
+import Notfound from './components/Notfound';
+import MovieDetails from './containers/MovieDetails';
 
-interface AppProps {
-    isAuthenticated: boolean;
-}
-interface RoutesState {
-    isAuthenticated: boolean;
-}
-
-export default class Routes extends Component<AppProps, RoutesState> {
-    constructor(props: AppProps) {
-        super(props);
-    
-        this.state = {
-            isAuthenticated: false
-        }
-    }
-    
-    componentDidMount = () => {
-    
-      if( localStorage.getItem("isAuthorized") === "true") {
-        // console.log(localStorage.getItem("isAuthorized"))
-        this.setState({
-          isAuthenticated: true
-        })
-      } else {
-        console.log("test2")
-        this.setState({
-          isAuthenticated: false
-        })
-      }
-    }
-    
+export default class Routes extends Component<{}, {}> {
     render() {
-        // const isAuthenticated =  localStorage.getItem('isAuthorized') === 'true' ? true : false;
-        const { isAuthenticated } = this.state;
+      
         return (
-            
-                <Switch>
-                            <>
-                            {isAuthenticated &&
-                                <>
-                                <div className="main-bg-image">
-                                    <Header />
-                                    <Container>
-                                        <Route  path="/dashboard" component={Dashboard} />
-                                        <Route  path="/bookmarks" component={Bookmarks} />
-                                    </Container>
-                                    </div>
-                                </>
-                                // :<Redirect to='/login' />
-                            }
-                           
-                            <Route path="/login" component={LoginIn} />
-                            <Route path="/signup" component={SignUp} />
-                            </>
+                  <>
+                  <Switch>
+                      <ProtectedRoute path="/dashboard" component={Dashboard} />
+                      <ProtectedRoute path="/account-settings" component={Account} />
+                      <ProtectedRoute path="/bookmarks" component={Bookmarks} />
+                      <ProtectedRoute path="/:id/details" component={MovieDetails} />
+                      <Route exact path="/" component={LoginIn} />
+                      <Route exact path="/signup" component={SignUp} />
+                      <Route component={Notfound} />
+                    </Switch>
+              </>
                         
-                </Switch>
         );
     }
 }

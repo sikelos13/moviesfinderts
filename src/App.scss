@@ -8,10 +8,20 @@ html, body {
     background: url('./images/main-bg-image.png') no-repeat center center fixed;
     background-size: cover;
     width: 100%;
-    height: 1280px;
+    min-height: 1280px;
+    height: 100%;
+}
+
+.link-button {
+    text-decoration: none;
+    color: #b56375;
+    font-weight: bold;
 }
 
 @import 'styles/signup.scss';
 @import 'styles/header.scss';
 @import 'styles/signin.scss';
 @import 'styles/dashboard.scss';
+@import 'styles/notfound.scss';
+@import 'styles/account.scss';
+@import 'styles/movieDetails.scss';

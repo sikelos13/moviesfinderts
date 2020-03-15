@@ -1,20 +1,16 @@
-import React, { Component, Fragment } from 'react';
-import { BrowserRouter as Router, Route, NavLink, Switch, Redirect } from 'react-router-dom';
-import Container, { ContainerProps } from '@material-ui/core/Container';
+import React, { Component } from 'react';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LogInIcon from '../images/login-in.png'
-import { Button } from '@material-ui/core';
+import axios from 'axios';
+import history from "../history";
 
 interface LogInState {
     formIsValid: boolean;
     formErrorText: string;
-    isReady: boolean;
-    clickSignUp: boolean;
     form: {
         username: string;
         password: string;
@@ -28,8 +24,6 @@ class LogIn extends Component<{}, LogInState> {
         this.state = {
             formIsValid: true,
             formErrorText: "",
-            isReady: false,
-            clickSignUp: false,
             form: {
                 username: "",
                 password: "",
@@ -38,10 +32,30 @@ class LogIn extends Component<{}, LogInState> {
     }
     submitSignInForm = () => {
         const { form } = this.state;
+
         if (this.handleFormValidation(form)) {
-            this.setState({ isReady: true })
-        }
+            axios.post(`http://localhost:8000/api/v1/account/login`, { username: form.username, password: form.password }, { withCredentials: true })
+                .then((res: any) => {
+                    if (res.status === 200) {
+                        const data = {
+                            username: res.data.username,
+                            password: res.data.password,
+                            id: res.data._id
+                        }
+
+                        localStorage.setItem(`isAuthorized`, JSON.stringify(true));
+                        localStorage.setItem('user', JSON.stringify(data));
+                        history.push('./dashboard');
+
+                    }
+                }).catch(err => {
+                    this.setState({
+                        formIsValid: false,
+                        formErrorText: err.response.data.message
+                })
+        })
     }
+}
 
     clearError = () => {
         this.setState({
@@ -51,29 +65,15 @@ class LogIn extends Component<{}, LogInState> {
     }
 
     handleFormValidation = (form: any) => {
-        const user: any = localStorage.getItem('user');
-        const parsedUser = JSON.parse(user);
-        console.log(form)
+
         if (form.password === "" || form.username === "") {
             this.setState({
                 formIsValid: false,
                 formErrorText: "Please fill all the fields in you sign up form"
             })
             return false;
-        } else if (form.password !== parsedUser.password) {
-            this.setState({
-                formIsValid: false,
-                formErrorText: "Invalid password"
-            })
-            return false;
-        } else if (form.username !== parsedUser.username) {
-            this.setState({
-                formIsValid: false,
-                formErrorText: "Invalid username"
-            })
-            return false
-        } else if (parsedUser && parsedUser.username === form.username && parsedUser.password === form.password) {
-            return true;
+        } else {
+            return true
         }
     }
 
@@ -92,17 +92,12 @@ class LogIn extends Component<{}, LogInState> {
     }
 
     redirectToSignUp = () => {
-        this.setState({ clickSignUp: true })
+        history.push('/signup');
     }
 
     render() {
-        const { formIsValid, formErrorText, isReady, clickSignUp } = this.state
-        if (isReady) {
-            return <Redirect to='/dashboard' />
-        }
-        if (clickSignUp) {
-            return <Redirect to='/signup' />
-        }
+        const { formIsValid, formErrorText } = this.state
+
         return (
             <Box width="100%" height="720px" display="flex" justifyContent="center">
                 <Box width="100%" display="flex" justifyContent="space-around" alignItems="center">

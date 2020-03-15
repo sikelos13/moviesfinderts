@@ -1,6 +1,11 @@
-module.exports = (app) => {
-    const movie = require('../controllers/movie.controller.js');
+const express = require('express');
+const router = express.Router();
+const movie = require('../controllers/movie.controller');
 
-    // find movies
-    app.get('/movie', movie.find);
-};
+// find movies
+router.get('/movies', movie.find);
+
+router.get('/movie/:movieId', movie.findByID);
+
+
+module.exports = router;

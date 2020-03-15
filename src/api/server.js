@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const session = require('express-session');
+var cors = require('cors');
 
 app.use(session({
     secret: 'secret',
@@ -9,16 +10,13 @@ app.use(session({
     saveUninitialized: true
 }));
 
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json())
-
-//Start a in-memory Mongo database
-const MongoInMemory = require('mongo-in-memory');
-
-var mongoServerInstance= new MongoInMemory();
 
 // Configuring the database
 const dbConfig = require('./config/database.config.js');
@@ -36,17 +34,19 @@ mongoose.connect(dbConfig.url, {
     process.exit();
 });
 
+//Import routes
+const userRouter = require('./routes/user.routes');
+const movieRouter = require('./routes/movie.routes');
+const accountRouter = require('./routes/account.routes');
+
+app.use('/api/v1/', userRouter);
+app.use('/api/v1/search', movieRouter);
+app.use('/api/v1/account', accountRouter);
+
 // listen for requests
-app.listen(8000, () => {
-    console.log("Server is listening on port 8000");
-
-    mongoServerInstance.start((error, config) => {
-        console.log("MongoDB started");
-        if (error) {
-            console.error(error);
-        }
-    })
+app.listen(8000,'localhost', (err) => {
+    if (err) {
+        return console.log('something bad happened', err)
+    }
+    console.log(`server is listening on 8000`)
 });
-
-require('./routes/user.routes')(app);
-require('./routes/movie.routes')(app);

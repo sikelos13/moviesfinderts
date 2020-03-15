@@ -1,38 +1,45 @@
 
 ## Moviesfinder-project
 
-In the project directory, you can run:
+This is an end-to-end search dashboard for education purposes.Build with create-react-app and typescript template and for the backend node.js.
 
-### `npm start`
+## Build With
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+* [NodeJs](https://nodejs.org/en/)
+* [Material UI](https://material-ui.com/)
+* [Create-react-app with Typescript template](https://create-react-app.dev/docs/adding-typescript/)
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### Prerequisites
 
-### `npm test`
+The project is running on nodeJs.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+If you want to run in development mode then:
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+cd moviesfinderts
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+npm install
+npm start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## How it Works
 
-### `npm run eject`
+Run the app with `npm run start` . The server listens to :8000 port and frontend at :3000. 
+For storing data we are using a in-memory MongoDB that you can connect with mongodb://localhost:27017/movieFinder 
+The user can navigate through the navigation bar and search for movies and save them to its bookmarks.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Features implemented
+* Search field with debounce for searching movies
+* Show details button for redirecting to details page of the selected movie.
+* Add to favorites button
+* Remove from favorites button with on fly deletation from the list
+* User can edit it's own account settings.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## How We built the Scripting/Parsing Tool.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+We worked on plain with typescript ,loadash, sass and node.js .For styling we followed Material Ui theme guidelines and for our REST we used Node.js.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## License
 
+Copyright © 2020, Released under AUEB License.

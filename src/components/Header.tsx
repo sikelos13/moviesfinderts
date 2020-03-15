@@ -1,34 +1,38 @@
 import React, { Component } from 'react'
-import { NavLink, withRouter, RouteComponentProps, Link } from 'react-router-dom';
-import { Route, Switch, Redirect } from 'react-router-dom';
-import { Box, Breadcrumbs, Input, Button, Menu, MenuItem } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
+import { Box, Breadcrumbs, Menu, MenuItem } from '@material-ui/core';
 import HeaderLogo from '../images/header-logo.png'
 import { SvgIcon } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import SearchIcon from '@material-ui/icons/Search';
 import HomeIcon from '@material-ui/icons/Home';
 import BookmarksIcon from '@material-ui/icons/Bookmarks';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import history from '../history'
 
 interface HeaderState {
     username: string;
     anchorEl?: any | null;
     isLoggedOut: boolean;
 }
-class Header extends Component<{}, HeaderState> {
+
+interface HeaderProps {
+    accountUsername?: string;
+}
+
+class Header extends Component<HeaderProps, HeaderState> {
     constructor(props: any) {
         super(props)
 
         this.state = {
             username: "",
-            isLoggedOut: false
+            isLoggedOut: false,
         };
     }
     componentDidMount = () => {
         const user: any = localStorage.getItem('user');
         const parsedUser = JSON.parse(user);
 
-        console.log(parsedUser)
         this.setState({ username: parsedUser && parsedUser != null && parsedUser.username })
     }
 
@@ -38,24 +42,25 @@ class Header extends Component<{}, HeaderState> {
     }
     handleClose = () => {
         this.setAnchorEl(null);
-      };
+    };
 
-      handleLogout = () => {
+    handleLogout = () => {
         this.setAnchorEl(null);
         localStorage.clear();
-        this.setState({isLoggedOut: true})
-      }
+        history.push('/');
+    }
 
-      setAnchorEl = (value: any | null) => {
-          this.setState({anchorEl: value})
-      }
+    handleAccount = () => {
+        this.setAnchorEl(null);
+        history.push('/account-settings');
+    }
+
+    setAnchorEl = (value: any | null) => {
+        this.setState({ anchorEl: value })
+    }
     render() {
-        // const {  location, history } = this.props;
-        const { username, anchorEl, isLoggedOut } = this.state;
-
-        if(isLoggedOut) {
-            return <Redirect to='/login' />
-        }
+        const { username, anchorEl } = this.state;
+        const { accountUsername } = this.props;
 
         return (
             <>
@@ -72,19 +77,17 @@ class Header extends Component<{}, HeaderState> {
                                 <li className="bookmarks-link">
                                     <Link to="/bookmarks">Bookmarks</Link>
                                 </li>
-                                <li className="donations-link">
-                                    <Link to="/donations">Donate</Link>
-                                </li>
                             </ul>
-                            <Box alignSelf="center">
-                                <SvgIcon component={SearchIcon} />
-                            </Box>
-                            <input type="text" className="navbar-search" placeholder="Search movie by title..." />
                         </nav>
                         <Box alignSelf="center" display="flex">
                             <div className="user-button" onClick={this.handleDropmenu}>
                                 <SvgIcon component={AccountCircleIcon} />
-                                    <div>{username}</div>
+                                <Box display="flex" alignItems="center" ml="5px">
+                                    {accountUsername
+                                        ? accountUsername
+                                        : username
+                                    }
+                                </Box>
                             </div>
                             <Menu
                                 id="simple-menu"
@@ -93,20 +96,20 @@ class Header extends Component<{}, HeaderState> {
                                 open={Boolean(anchorEl)}
                                 onClose={this.handleClose}
                             >
-                                <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                                <MenuItem onClick={this.handleAccount}>My account</MenuItem>
                                 <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
                             </Menu>
                         </Box>
                     </div>
                 </div>
                 <Breadcrumbs className="Head__Breadcrumb Head__Breadcrumb--Active">
-                    <Switch>
-                        <Box display="flex" m="20px">
+                    <Box display="flex" m="20px">
+                        <Switch>
                             <Route exact path="/dashboard" render={() => <><SvgIcon width="20px" height="20px" component={HomeIcon} /><span>Dashboard</span></>} />
                             <Route exact path="/bookmarks" render={() => <><SvgIcon width="20px" height="20px" component={BookmarksIcon} /><span>Bookmarks</span></>} />
-                            <Route exact path="/donations" render={() => <><SvgIcon width="20px" height="20px" component={MonetizationOnIcon} /><span>Donate</span></>} />
-                            </Box>
                         </Switch>
+                    </Box>
+
                 </Breadcrumbs>
             </>
         );

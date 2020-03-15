@@ -1,11 +1,10 @@
 const users = require('../models/users.model');
-const session = require('express-session');
 
 // Create and Save a new user
 exports.create = (req, res) => {
 
     // Validate request
-    if(!req.body.username || !req.body.password) {
+    if (!req.body.username || !req.body.password) {
         return res.status(400).send({
             message: "username or password not valid"
         });
@@ -13,40 +12,54 @@ exports.create = (req, res) => {
 
     // Create a user
     const user = new users({
-        username: req.body.username ,
-        password: users.generateHash(req.body.password)
+        username: req.body.username,
+        password: req.body.password
     });
 
-    users.findOne(user,function (err) {
+    users.findOne({username:user.username,password:user.password}, function (err, u) {
         if (err) return console.error(err);
-        return res.status(400).send({
-            message: "username or password not valid"
-        });
-    });
 
-    // Save user in the database
-    user.save()
-        .then(data => {
-            res.send(data);
-        }).catch(err => {
-        res.status(500).send({
-            message: err.message || "Some error occurred while creating the user."
-        });
-    });
+        if (u) {
+            console.log("user exist ", u);
+            return res.status(400).send({
+                message: "username or password not valid"
+            });
+        }
+        // Save user in the database
+        user.save()
+            .then(data => {
+                console.log("save user done: ", data);
+                data.password = users.generateHash(data.password);
+                req.session.loggedin = true;
+                req.session.userId = data._id;
+                console.log("saved user done: ", req.sessionID);
+
+                res.send(data);
+            }).catch(error => {
+            res.status(500).send({
+                message: error.message || "Some error occurred while creating the user."
+            });
+        })
+    })
 };
 
 // Find a single user with a userId
 exports.findOne = (req, res) => {
+
+    if(!req.session.loggedin || req.session.userId !== req.params.userId ){
+        return res.status(401).send({
+            message: "Unauthorized request"
+        });
+    }
+
     users.findById(req.params.userId)
         .then(user => {
-            if(!user) {
-                return res.status(404).send({
-                    message: "user not found with id " + req.params.userId
-                });
+            if (!user) {
+                return res.status(404).send({message: "user not found with id " + req.params.userId});
             }
             res.send(user);
         }).catch(err => {
-        if(err.kind === 'ObjectId') {
+        if (err.kind === 'ObjectId') {
             return res.status(404).send({
                 message: "user not found with id " + req.params.userId
             });
@@ -59,27 +72,34 @@ exports.findOne = (req, res) => {
 
 // Update a user identified by the userId in the request
 exports.update = (req, res) => {
+
+    if(!req.session.loggedin || req.session.userId !== req.params.userId ){
+        return res.status(401).send({
+            message: "Unauthorized request"
+        });
+    }
+
     // Validate Request
-    if(!req.body.content) {
+    if (!req.body.username || !req.body.password) {
         return res.status(400).send({
-            message: "user content can not be empty"
+            message: "user data can not be empty"
         });
     }
 
     // Find user and update it with the request body
     users.findByIdAndUpdate(req.params.userId, {
-        title: req.body.title || "Untitled user",
-        content: req.body.content
+        username: req.body.username,
+        password: req.body.password
     }, {new: true})
         .then(user => {
-            if(!user) {
+            if (!user) {
                 return res.status(404).send({
                     message: "user not found with id " + req.params.userId
                 });
             }
             res.send(user);
         }).catch(err => {
-        if(err.kind === 'ObjectId') {
+        if (err.kind === 'ObjectId') {
             return res.status(404).send({
                 message: "user not found with id " + req.params.userId
             });
@@ -92,16 +112,23 @@ exports.update = (req, res) => {
 
 // Delete a user with the specified userId in the request
 exports.delete = (req, res) => {
+
+    if(!req.session.loggedin || req.session.userId !== req.params.userId ){
+        return res.status(401).send({
+            message: "Unauthorized request"
+        });
+    }
+
     users.findByIdAndRemove(req.params.userId)
         .then(user => {
-            if(!user) {
+            if (!user) {
                 return res.status(404).send({
                     message: "user not found with id " + req.params.userId
                 });
             }
             res.send({message: "user deleted successfully!"});
         }).catch(err => {
-        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
+        if (err.kind === 'ObjectId' || err.name === 'NotFound') {
             return res.status(404).send({
                 message: "user not found with id " + req.params.userId
             });
