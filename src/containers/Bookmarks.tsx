@@ -5,6 +5,8 @@ import MoviesList from '../components/MoviesList';
 import { Movie, MovieExtended } from '../types'
 import { Container } from '@material-ui/core';
 import history from "../history";
+import { Link } from 'react-router-dom';
+import { Box } from '@material-ui/core';
 
 interface BookmarksState {
     moviesIdList?: number[];
@@ -22,22 +24,22 @@ class Bookmarks extends Component<{}, BookmarksState> {
         }
     }
 
-   async componentDidMount() {
+    async componentDidMount() {
         const user: any = localStorage.getItem('user');
         const parsedUser = JSON.parse(user);
 
-       await axios.get(`http://localhost:8000/api/v1/account/${parsedUser.id}/favorite`, { withCredentials: true })
+        await axios.get(`http://localhost:8000/api/v1/account/${parsedUser.id}/favorite`, { withCredentials: true })
             .then((res: any) => res.data)
             .then((data: any) => {
-                    const newData = data.map((item: Movie) => {
-                        const movie = {
-                            ...item,
-                            isBookmarked: true
-                        }
-                        return movie;
-                    })
-                    this.setState({moviesList: newData})
+                const newData = data.map((item: Movie) => {
+                    const movie = {
+                        ...item,
+                        isBookmarked: true
+                    }
+                    return movie;
                 })
+                this.setState({ moviesList: newData })
+            })
     }
 
     onShowDetails = (movie: Movie) => {
@@ -51,13 +53,13 @@ class Bookmarks extends Component<{}, BookmarksState> {
         const user: any = localStorage.getItem('user');
         const parsedUser = JSON.parse(user);
 
-        if(movie.isBookmarked) {
-             axios.delete(`http://localhost:8000/api/v1/account/${parsedUser.id}/favorite/${movie.imdbID}`, { withCredentials: true })
-            .then((res: any) => {
-                const filteredArray = moviesList.filter((item: Movie) => {
-                    return item.imdbID !== movie.imdbID;
-                });
-                    this.setState({moviesList: filteredArray})
+        if (movie.isBookmarked) {
+            axios.delete(`http://localhost:8000/api/v1/account/${parsedUser.id}/favorite/${movie.imdbID}`, { withCredentials: true })
+                .then((res: any) => {
+                    const filteredArray = moviesList.filter((item: Movie) => {
+                        return item.imdbID !== movie.imdbID;
+                    });
+                    this.setState({ moviesList: filteredArray })
                 })
         }
     }
@@ -69,15 +71,16 @@ class Bookmarks extends Component<{}, BookmarksState> {
             <>
                 <Header />
                 <Container>
-                <h1 className="main-header">My Bookmarks</h1>
-                        {moviesList && moviesList.length > 0 &&
-                            <MoviesList
-                                moviesList={moviesList}
-                                onHandleBookmark={this.onHandleBookmark}
-                                onShowDetails={this.onShowDetails}
-                                totalMovies={totalResults}
-                            />
-                        }
+                    <h1 className="main-header">My Bookmarks</h1>
+                    {moviesList && moviesList.length > 0
+                        ? <MoviesList
+                            moviesList={moviesList}
+                            onHandleBookmark={this.onHandleBookmark}
+                            onShowDetails={this.onShowDetails}
+                            totalMovies={totalResults}
+                        />
+                        : <Box textAlign="center" fontSize="20px">Your bookmarks are empty. Return to your <Link className="link-button" to="/dashboard">Dashboard</Link> to search movies</Box>
+                    }
                 </Container>
             </>
         );

@@ -12,6 +12,12 @@ html, body {
     height: 100%;
 }
 
+.link-button {
+    text-decoration: none;
+    color: #b56375;
+    font-weight: bold;
+}
+
 @import 'styles/signup.scss';
 @import 'styles/header.scss';
 @import 'styles/signin.scss';

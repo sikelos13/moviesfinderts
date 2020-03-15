@@ -15,7 +15,12 @@ interface HeaderState {
     anchorEl?: any | null;
     isLoggedOut: boolean;
 }
-class Header extends Component<{}, HeaderState> {
+
+interface HeaderProps {
+    accountUsername?: string;
+}
+
+class Header extends Component<HeaderProps, HeaderState> {
     constructor(props: any) {
         super(props)
 
@@ -28,7 +33,7 @@ class Header extends Component<{}, HeaderState> {
         const user: any = localStorage.getItem('user');
         const parsedUser = JSON.parse(user);
 
-        this.setState({ username: parsedUser && parsedUser != null && parsedUser.username})
+        this.setState({ username: parsedUser && parsedUser != null && parsedUser.username })
     }
 
     handleDropmenu = (event: any) => {
@@ -55,6 +60,7 @@ class Header extends Component<{}, HeaderState> {
     }
     render() {
         const { username, anchorEl } = this.state;
+        const { accountUsername } = this.props;
 
         return (
             <>
@@ -71,15 +77,17 @@ class Header extends Component<{}, HeaderState> {
                                 <li className="bookmarks-link">
                                     <Link to="/bookmarks">Bookmarks</Link>
                                 </li>
-                                <li className="donations-link">
-                                    <Link to="/donations">Donate</Link>
-                                </li>
                             </ul>
                         </nav>
                         <Box alignSelf="center" display="flex">
                             <div className="user-button" onClick={this.handleDropmenu}>
                                 <SvgIcon component={AccountCircleIcon} />
-                                <div>{username}</div>
+                                <Box display="flex" alignItems="center" ml="5px">
+                                    {accountUsername
+                                        ? accountUsername
+                                        : username
+                                    }
+                                </Box>
                             </div>
                             <Menu
                                 id="simple-menu"
@@ -99,7 +107,6 @@ class Header extends Component<{}, HeaderState> {
                         <Switch>
                             <Route exact path="/dashboard" render={() => <><SvgIcon width="20px" height="20px" component={HomeIcon} /><span>Dashboard</span></>} />
                             <Route exact path="/bookmarks" render={() => <><SvgIcon width="20px" height="20px" component={BookmarksIcon} /><span>Bookmarks</span></>} />
-                            <Route exact path="/donations" render={() => <><SvgIcon width="20px" height="20px" component={MonetizationOnIcon} /><span>Donate</span></>} />
                         </Switch>
                     </Box>
 

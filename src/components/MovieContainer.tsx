@@ -46,22 +46,22 @@ const MovieContainer: React.FC<MovieContainerProps> = ({ onShowDetails, onHandle
           title={movie.Title}
         />
         <Box m="5px 0 0 10px" id="favorite-icon">
-              {movie.isBookmarked
-                  ? <FavoriteIcon />
-                  : <FavoriteBorderIcon />
-              }
-          </Box>
+          {movie.isBookmarked
+            ? <FavoriteIcon />
+            : <FavoriteBorderIcon />
+          }
+        </Box>
         <CardContent className="card-type-height">
           <Typography gutterBottom variant="h5" component="h2">
-              {movie.Title}
+            {movie.Title}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-              {movie.Year}
+            {movie.Year}
           </Typography>
           {movie.errorMessage &&
             <Typography variant="body2" color="error" component="p">
               {movie.errorMessage}
-          </Typography>
+            </Typography>
           }
         </CardContent>
       </CardActionArea>
