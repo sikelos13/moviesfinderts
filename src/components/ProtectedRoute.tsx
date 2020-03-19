@@ -11,8 +11,6 @@ const isAuthenticated = (auth: string | null) => {
         return false
     }
 }
-
-// const isAuthorized = isAuthenticated;
 export class ProtectedRoute extends Component<any, {}> {
 
     render() {

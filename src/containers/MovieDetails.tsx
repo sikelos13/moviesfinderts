@@ -48,10 +48,10 @@ class MovieDetails extends Component<{}, MovieDetailsState> {
                     <Box width="100%" height="720px" display="flex" justifyContent="center">
                         {movie &&
                             <>
-                                <Box id="image-frame-wrapper" maxHeight="600px" borderRadius="7px" m="50px">
+                                <Box className="image-frame-wrapper" maxHeight="600px" borderRadius="7px" m="50px">
                                     <img src={movie.Poster} alt={movie.Title} className="frame3" />
                                 </Box>
-                                <Box id="information-container" m="50px" borderRadius="7px" display="flex" flexDirection="column" maxHeight="600px" p="10px">
+                                <Box className="information-container" m="50px" borderRadius="7px" display="flex" flexDirection="column" maxHeight="600px" p="10px">
                                     <Box display="flex" flexDirection="row">
                                         <h1>{movie.Title}</h1>
                                     </Box>
@@ -76,7 +76,7 @@ class MovieDetails extends Component<{}, MovieDetailsState> {
                     <Button
                         variant="contained"
                         color="default"
-                        id="back-button"
+                        className="back-button"
                         onClick={this.handleHistoryChange}
                         startIcon={<BackArrow />}
                     >

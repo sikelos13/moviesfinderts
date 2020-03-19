@@ -3,10 +3,11 @@ import Header from '../components/Header'
 import axios from 'axios';
 import MoviesList from '../components/MoviesList';
 import { Movie, MovieExtended } from '../types'
-import { Container } from '@material-ui/core';
+import { Container, Button } from '@material-ui/core';
 import history from "../history";
 import { Link } from 'react-router-dom';
 import { Box } from '@material-ui/core';
+import BackArrow from '@material-ui/icons/ArrowLeft';
 
 interface BookmarksState {
     moviesIdList?: number[];
@@ -39,7 +40,13 @@ class Bookmarks extends Component<{}, BookmarksState> {
                     return movie;
                 })
                 this.setState({ moviesList: newData })
+            }).catch(err => {
+                console.log(err)
             })
+    }
+
+    handleHistoryChange = () => {
+        history.push('/dashboard');
     }
 
     onShowDetails = (movie: Movie) => {
@@ -71,7 +78,20 @@ class Bookmarks extends Component<{}, BookmarksState> {
             <>
                 <Header />
                 <Container>
+                    <Box display="flex" alignItems="center" justifyContent="space-evenly" flexDirection="row-reverse">
+                    <Button
+                        variant="contained"
+                        color="default"
+                        className="back-button"
+                        onClick={this.handleHistoryChange}
+                        startIcon={<BackArrow />}
+                    >
+                        Back to dashboard
+                    </Button>
                     <h1 className="main-header">My Bookmarks</h1>
+            
+                    </Box>
+
                     {moviesList && moviesList.length > 0
                         ? <MoviesList
                             moviesList={moviesList}

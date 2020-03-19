@@ -37,7 +37,6 @@ class SignUp extends Component<{}, SignUpState> {
         const { form } = this.state;
 
         if (this.handleFormValidation(form)) {
-
             axios.post(`http://localhost:8000/api/v1/user`, { username: form.username, password: form.password }, { withCredentials: true })
                 .then((res: any) => {
                     if (res.status == 200) {
