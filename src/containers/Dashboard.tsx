@@ -143,7 +143,6 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
                             {dashboardErrorMessage &&
                                 <h4 className="error-dashboard">{dashboardErrorMessage}</h4>
                             }
-
                             <TextField
                                 id="main-search-bar"
                                 style={{ margin: 8 }}
@@ -156,7 +155,6 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
                                 }}
                                 variant="outlined"
                             />
-
                         </div>
                         {results &&
                             <MoviesList

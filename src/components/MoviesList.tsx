@@ -3,7 +3,6 @@ import Box from '@material-ui/core/Box';
 import MovieContainer from './MovieContainer';
 import { Movie } from '../types';
 
-
 interface MoviesListProps {
     moviesList: Movie[]
     onHandleBookmark: (movie: Movie) => void;

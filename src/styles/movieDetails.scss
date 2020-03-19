@@ -1,5 +1,5 @@
 
-#information-container {
+.information-container {
     background-color: #353539;
     font-size: 17px;
     color: #F9F5D9;
@@ -7,7 +7,7 @@
     overflow-y: auto;
 }
 
-  #image-frame-wrapper {
+  .image-frame-wrapper {
     margin: 50px;
 
     &img {
@@ -25,12 +25,12 @@
     box-shadow: 0 0 0 5px white, 0 0 0 6px #AAA, 0 0 0 10px #CCC, 0 0 0 11px #AAA;
   }
   
-#back-button {
+.back-button {
     float: right;
     margin-right: 50px;
 }
 
-#favorite-icon {
-    align-self: end;
-    color: #67cecc;
+.favorite-icon {
+  align-self: end;
+  color: #67cecc;
 }

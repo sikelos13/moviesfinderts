@@ -8,7 +8,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { Movie } from '../types';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { Box } from '@material-ui/core';
 
@@ -46,9 +45,8 @@ const MovieContainer: React.FC<MovieContainerProps> = ({ onShowDetails, onHandle
           title={movie.Title}
         />
         <Box m="5px 0 0 10px" id="favorite-icon">
-          {movie.isBookmarked
-            ? <FavoriteIcon />
-            : <FavoriteBorderIcon />
+          {movie.isBookmarked &&
+            <FavoriteIcon className="favorite-icon" />
           }
         </Box>
         <CardContent className="card-type-height">
